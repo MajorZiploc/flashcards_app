@@ -23,6 +23,10 @@ const drawerData = [
     icon: iconHome,
   },
   {
+    name: 'Flash Cards',
+    icon: iconHome,
+  },
+  {
     name: 'Calendar',
     icon: iconCalendar,
   },

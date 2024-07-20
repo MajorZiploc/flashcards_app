@@ -1,4 +1,5 @@
 import HomeScreen from '../home/HomeViewContainer';
+import FlashCardsHomeScreen from '../flashcards/FlashCardsHomeViewContainer';
 import CalendarScreen from '../calendar/CalendarViewContainer';
 import GridsScreen from '../grids/GridsViewContainer';
 import PagesScreen from '../pages/PagesViewContainer';
@@ -14,6 +15,11 @@ const tabNavigationData = [
   {
     name: 'Home',
     component: HomeScreen,
+    icon: iconHome,
+  },
+  {
+    name: 'Flash Cards',
+    component: FlashCardsHomeScreen,
     icon: iconHome,
   },
   {
