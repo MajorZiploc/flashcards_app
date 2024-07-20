@@ -13,6 +13,7 @@ import AvailableInFullVersion from '../../modules/availableInFullVersion/Availab
 // import AuthScreen from '../auth/AuthViewContainer';
 
 import { colors, fonts } from '../../styles';
+import StudySession from '../flashcards/StudySession';
 
 const headerLeftComponent = (props) => {
   return (
@@ -128,6 +129,17 @@ const StackNavigationData = [
   {
     name: 'Auth',
     component: AvailableInFullVersion,
+    headerLeft: headerLeftComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'StudySession',
+    component: StudySession,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {

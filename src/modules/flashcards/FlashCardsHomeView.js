@@ -8,8 +8,9 @@ import {
 
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
+import { Button } from '../../components';
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended }) {
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation }) {
   // const rnsUrl = 'https://reactnativestarter.com';
   // const handleClick = () => {
   //   Linking.canOpenURL(rnsUrl).then(supported => {
@@ -30,8 +31,14 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended }) {
       >
         <View style={styles.section}>
           <Text size={20} white>
-            FlashCardsHome
+            TODO: make this a dynamic list of tables
           </Text>
+          <Button
+            style={[styles.demoButton, {flexBasis: '47%'}]}
+            primary
+            caption="Study Cards 01"
+            onPress={() => navigation.navigate('StudySession')}
+          />
         </View>
         <View style={styles.section}>
           <Text color="#19e7f7" size={15}>
@@ -117,5 +124,9 @@ const styles = StyleSheet.create({
   priceLink: {
     borderBottomWidth: 1,
     borderBottomColor: colors.primary,
+  },
+  demoButton: {
+    marginTop: 8,
+    marginBottom: 8,
   },
 });
