@@ -13,7 +13,7 @@ import AvailableInFullVersion from '../../modules/availableInFullVersion/Availab
 // import AuthScreen from '../auth/AuthViewContainer';
 
 import { colors, fonts } from '../../styles';
-import StudySession from '../flashcards/StudySession';
+import StudySessionContainer from '../flashcards/StudySessionContainer';
 
 const headerLeftComponent = (props) => {
   return (
@@ -139,7 +139,7 @@ const StackNavigationData = [
   },
   {
     name: 'StudySession',
-    component: StudySession,
+    component: StudySessionContainer,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {

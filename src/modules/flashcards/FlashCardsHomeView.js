@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -9,9 +9,6 @@ import { Text } from '../../components/StyledText';
 import { Button } from '../../components';
 
 export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync, cards }) {
-  useEffect(() => {
-    loadCardsAsync([1,2,3]);
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -23,9 +20,6 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         <View style={styles.section}>
           <Text size={20} white>
             TODO: make this a dynamic table of study card options
-          </Text>
-          <Text size={20} white>
-            {cards?.join(", ")}
           </Text>
           <Button
             style={[styles.demoButton]}
@@ -39,9 +33,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             style={[styles.demoButton]}
             primary
             caption="Import Cards"
-            onPress={() => {
-              loadCardsAsync(cards?.map(c => c + 1));
-            }}
+            onPress={() => {}}
           />
         </View>
       </ImageBackground>
