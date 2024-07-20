@@ -39,7 +39,7 @@ const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
   {
-    name: 'React Native Starter',
+    name: 'Flashcards App',
     component: TabNavigator,
     headerLeft: null,
     headerBackground: { source: headerBackground },

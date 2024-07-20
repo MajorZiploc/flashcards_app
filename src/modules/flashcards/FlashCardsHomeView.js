@@ -29,13 +29,19 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
       >
         <View style={styles.section}>
           <Text size={20} white>
-            TODO: make this a dynamic list of tables
+            TODO: make this a dynamic table of study card options
           </Text>
           <Button
-            style={[styles.demoButton, {flexBasis: '47%'}]}
+            style={[styles.demoButton]}
             primary
             caption="Study Cards 01"
             onPress={() => navigation.navigate('StudySession')}
+          />
+          <Button
+            style={[styles.demoButton]}
+            primary
+            caption="Import Cards"
+            onPress={() => {}}
           />
         </View>
       </ImageBackground>
