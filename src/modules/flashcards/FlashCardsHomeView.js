@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,17 +8,10 @@ import {
 import { Text } from '../../components/StyledText';
 import { Button } from '../../components';
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation }) {
-  // const rnsUrl = 'https://reactnativestarter.com';
-  // const handleClick = () => {
-  //   Linking.canOpenURL(rnsUrl).then(supported => {
-  //     if (supported) {
-  //       Linking.openURL(rnsUrl);
-  //     } else {
-  //       console.log(`Don't know how to open URI: ${rnsUrl}`);
-  //     }
-  //   });
-  // };
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, cards }) {
+  useEffect(() => {
+    loadCards([1,2,3]);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -31,17 +24,24 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <Text size={20} white>
             TODO: make this a dynamic table of study card options
           </Text>
+          <Text size={20} white>
+            {cards?.join(", ")}
+          </Text>
           <Button
             style={[styles.demoButton]}
             primary
             caption="Study Cards 01"
-            onPress={() => navigation.navigate('StudySession')}
+            onPress={() => {
+              navigation.navigate('StudySession')
+            }}
           />
           <Button
             style={[styles.demoButton]}
             primary
             caption="Import Cards"
-            onPress={() => {}}
+            onPress={() => {
+              loadCards(cards?.map(c => c + 1));
+            }}
           />
         </View>
       </ImageBackground>
