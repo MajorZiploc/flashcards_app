@@ -8,9 +8,9 @@ import {
 import { Text } from '../../components/StyledText';
 import { Button } from '../../components';
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, cards }) {
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync, cards }) {
   useEffect(() => {
-    loadCards([1,2,3]);
+    loadCardsAsync([1,2,3]);
   }, []);
 
   return (
@@ -40,7 +40,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             primary
             caption="Import Cards"
             onPress={() => {
-              loadCards(cards?.map(c => c + 1));
+              loadCardsAsync(cards?.map(c => c + 1));
             }}
           />
         </View>

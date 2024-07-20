@@ -14,6 +14,16 @@ export function loadCards(cards) {
   };
 }
 
+// Similar pattern for calling apis can be used
+export const loadCardsAsync = cards => dispatch => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      dispatch(loadCards(cards));
+      resolve();
+    }, 1000); // Simulating an async operation with a setTimeout
+  });
+};
+
 const defaultState = {
   cards: [],
   isLoading: false,
