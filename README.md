@@ -1,3 +1,16 @@
+# Running
+
+npx react-native start
+
+# Very detailed logs
+
+npx react-native log-android
+
+npx react-native log-ios
+
+## NOTE: console.log should appear without this in the main running terminal. if it doesnt, then use one of these and it will start to show, then you can stop the details logs
+
+
 # React Native Starter 🚀
 
 [View Demo](https://play.google.com/store/apps/details?id=com.reactnativestarter.upd) | [Download](https://github.com/flatlogic/react-native-starter.git) | [More templates](https://flatlogic.com/templates) | [Support forum](https://flatlogic.com/forum)
