@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,9 +6,16 @@ import {
 } from 'react-native';
 
 import { Text } from '../../components/StyledText';
-import { Button } from '../../components';
+import { Button, RadioGroup } from '../../components';
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync, cards }) {
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, isDefinitionFirst, isDefinitionFirstSet }) {
+
+  const [selectedFirstIndex, setSelectedFirstIndex] = useState(isDefinitionFirst ? 1 : 0);
+
+  const setIsDefinitionFirst = (index) => {
+    setSelectedFirstIndex(index);
+    isDefinitionFirstSet(index === 1);
+  };
 
   return (
     <View style={styles.container}>
@@ -18,11 +25,18 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         resizeMode="cover"
       >
         <View style={styles.section}>
+          <View style={[styles.radioFirst]}>
+            <RadioGroup
+              selectedIndex={selectedFirstIndex}
+              items={['term', 'definition']}
+              onChange={setIsDefinitionFirst}
+            />
+          </View>
           <Text size={20} white>
             TODO: make this a dynamic table of study card options
           </Text>
           <Button
-            style={[styles.demoButton]}
+            style={[styles.button]}
             primary
             caption="Study Cards 01"
             onPress={() => {
@@ -30,7 +44,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             }}
           />
           <Button
-            style={[styles.demoButton]}
+            style={[styles.button]}
             primary
             caption="Import Cards"
             onPress={() => {}}
@@ -57,8 +71,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  demoButton: {
+  button: {
     marginTop: 8,
     marginBottom: 8,
+  },
+  radioFirst: {
+    height: 50,
+    width: 150,
   },
 });

@@ -1,23 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from '../../components';
 
-function StudySession({ loadCards, loadCardsAsync, cards }) {
+function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
+  const [studyCards, setStudyCards] = useState([]);
+
   useEffect(() => {
-    loadCardsAsync([1,2,3]);
+    loadCardsAsync([
+      {
+        definition: 'the definition1',
+        term: 'the term1'
+      },
+      {
+        definition: 'the definition2',
+        term: 'the term2'
+      }
+    ]);
   }, []);
+
+  useEffect(() => {
+    setStudyCards((cards ?? []).map(c => ({...c, front: isDefinitionFirst ? c.definition : c.term, back: isDefinitionFirst ? c.term : c.definition})));
+  }, [cards, isDefinitionFirst]);
+
   return (
     <View style={styles.container}>
       <Text>Welcome to the Study Session!</Text>
-      <Text size={20} white>
-        {cards?.join(", ")}
-      </Text>
+      <Text size={20}>{`${isDefinitionFirst}`}</Text>
+      {(studyCards ?? []).map(c => (
+        <Text key={c.front} size={20} white>
+          {`${c.front} - ${c.back}`}
+        </Text>
+      ))}
       <Button
-        style={[styles.demoButton]}
+        style={[styles.button]}
         primary
         caption="Test Button"
         onPress={() => {
-          loadCardsAsync(cards?.map(c => c + 1));
+          loadCardsAsync(cards?.map(c => ({term: c.term + '1', definition: c.definition + '1'})));
         }}
       />
     </View>
@@ -30,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  demoButton: {
+  button: {
     marginTop: 8,
     marginBottom: 8,
   },

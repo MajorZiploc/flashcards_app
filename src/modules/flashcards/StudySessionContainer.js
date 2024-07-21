@@ -7,7 +7,8 @@ import StudySession from './StudySession';
 export default compose(
   connect(
     state => ({
-      cards: state.flashcards.cards
+      cards: state.flashcards.cards,
+      isDefinitionFirst: state.flashcards.isDefinitionFirst,
     }),
     dispatch => ({
       loadCards: (cards) => dispatch(loadCards(cards)),
