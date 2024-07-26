@@ -1,6 +1,18 @@
+# Check if you have all dependencies
+
+npx react-native doctor
+
 # Running
 
 npx react-native start
+
+then input a or i for android or ios
+
+OR
+
+npx react-native run-android
+
+npx react-native run-ios
 
 # Very detailed logs
 
