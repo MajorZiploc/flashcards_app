@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import FlipCard from 'react-native-flip-card';
-import Swiper from 'react-native-deck-swiper';
 
 export const Gray300 = '#E0E0E0'
 export const Gray100 = '#F5F5F5'
@@ -13,20 +12,27 @@ export const Green = '#007A3D'
 export const { width, height } = Dimensions.get('window');
 
 function StudyCard(props) {
+  const { cardData, idx } = props;
+  if (!cardData) return <></>;
   return (
-    <FlipCard
-      style={styles.flipCard}
-      perspective={1000}
-      flipHorizontal={true}
-      flipVertical={false}
-    >
+    <ScrollView>
       <View style={styles.flipSide}>
-        <Text style={styles.face}>question</Text>
+        <Text>{idx}</Text>
       </View>
-      <View style={styles.flipSide}>
-        <Text style={styles.back}>answer</Text>
-      </View>
-    </FlipCard>
+      <FlipCard
+        style={styles.flipCard}
+        perspective={1000}
+        flipHorizontal={true}
+        flipVertical={false}
+      >
+        <View style={styles.flipSide}>
+          <Text style={styles.face}>{cardData.front}</Text>
+        </View>
+        <View style={styles.flipSide}>
+          <Text style={styles.back}>{cardData.back}</Text>
+        </View>
+      </FlipCard>
+    </ScrollView>
   );
 }
 

@@ -4,6 +4,15 @@ import { Button } from '../../components';
 import Swiper from 'react-native-deck-swiper';
 import StudyCard from './StudyCard';
 
+export const Gray300 = '#E0E0E0'
+export const Gray100 = '#F5F5F5'
+export const Gray50 = '#FAFAFA'
+export const White = '#FFFFFF'
+export const Red = '#CE1126'
+export const Green = '#007A3D'
+
+export const { width, height } = Dimensions.get('window');
+
 function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
   const [studyCards, setStudyCards] = useState([]);
 
@@ -26,22 +35,38 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
 
   return (
     <View style={styles.container}>
-      <StudyCard />
-      <Text>Welcome to the Study Session!</Text>
-      <Text size={20}>{`${isDefinitionFirst}`}</Text>
-      {(studyCards ?? []).map(c => (
-        <Text key={c.front} size={20} white>
-          {`${c.front} - ${c.back}`}
-        </Text>
-      ))}
-      <Button
-        style={[styles.button]}
-        primary
-        caption="Test Button"
-        onPress={() => {
-          loadCardsAsync(cards?.map(c => ({term: c.term + '1', definition: c.definition + '1'})));
+      <Swiper
+        cards={studyCards}
+        renderCard={(cardData, idx) => <StudyCard cardData={cardData} idx={idx} />}
+        onSwipedTop={index => {
+          console.log('onSwipedTop');
+          console.log(index);
         }}
-      />
+        onSwipedBottom={index => {
+          console.log('onSwipedBottom');
+          console.log(index);
+        }}
+        onSwipedAll={() => {
+          console.log("all done!");
+        }}
+        animateOverlayLabelsOpacity
+        animateCardOpacity
+        backgroundColor={Gray50}
+        horizontalSwipe={false}
+        verticalSwipe={true}
+        cardVerticalMargin={0}
+        cardHorizontalMargin={0}
+        marginTop={110}
+      >
+      </Swiper>
+      {/* <Button */}
+      {/*   style={[styles.button]} */}
+      {/*   primary */}
+      {/*   caption="Test Button" */}
+      {/*   onPress={() => { */}
+      {/*     loadCardsAsync(cards?.map(c => ({term: c.term + '1', definition: c.definition + '1'}))); */}
+      {/*   }} */}
+      {/* /> */}
     </View>
   );
 }
