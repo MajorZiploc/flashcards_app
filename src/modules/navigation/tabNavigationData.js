@@ -1,11 +1,9 @@
 import FlashCardsHomeScreen from '../flashcards/FlashCardsHomeViewContainer';
 import GridsScreen from '../grids/GridsViewContainer';
-import PagesScreen from '../pages/PagesViewContainer';
 import ComponentsScreen from '../components/ComponentsViewContainer';
 
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconGrids = require('../../../assets/images/tabbar/grids.png');
-const iconPages = require('../../../assets/images/tabbar/pages.png');
 const iconComponents = require('../../../assets/images/tabbar/components.png');
 
 const tabNavigationData = [
@@ -18,11 +16,6 @@ const tabNavigationData = [
     name: 'Grids',
     component: GridsScreen,
     icon: iconGrids,
-  },
-  {
-    name: 'Pages',
-    component: PagesScreen,
-    icon: iconPages,
   },
   {
     name: 'Components',
