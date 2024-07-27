@@ -10,7 +10,6 @@ import NavigatorView from './RootNavigation';
 import AvailableInFullVersion from '../../modules/availableInFullVersion/AvailableInFullVersionViewContainer';
 
 const iconHome = require('../../../assets/images/drawer/home.png');
-const iconCalendar = require('../../../assets/images/drawer/calendar.png');
 const iconGrids = require('../../../assets/images/drawer/grids.png');
 const iconPages = require('../../../assets/images/drawer/pages.png');
 const iconComponents = require('../../../assets/images/drawer/components.png');
@@ -25,10 +24,6 @@ const drawerData = [
   {
     name: 'Flash Cards',
     icon: iconHome,
-  },
-  {
-    name: 'Calendar',
-    icon: iconCalendar,
   },
   {
     name: 'Grids',
@@ -90,18 +85,6 @@ function CustomDrawerContent(props) {
         onPress={() => props.navigation.navigate('Blog')}
       />
       <View style={styles.divider} />
-      <DrawerItem
-        label={() => (
-          <View style={styles.menuLabelFlex}>
-            <Image
-              style={{ width: 20, height: 20}}
-              source={iconSettings} 
-            />
-            <Text style={styles.menuTitle}>Settings</Text>
-          </View>
-        )}
-        onPress={() => props.navigation.navigate('Calendar')}
-      />
     </DrawerContentScrollView>
   );
 }

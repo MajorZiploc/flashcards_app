@@ -138,7 +138,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'StudySession',
+    name: 'Study Session',
     component: StudySessionContainer,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
