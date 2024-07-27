@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
-import { isDefinitionFirstSet } from './FlashCardsState';
+import { isDefinitionFirstSet, loadCards, loadCardsAsync  } from './FlashCardsState';
 
 import FlashCardsHomeScreen from './FlashCardsHomeView';
 
@@ -11,6 +11,8 @@ export default compose(
     }),
     dispatch => ({
       isDefinitionFirstSet: (isDefinitionFirst) => dispatch(isDefinitionFirstSet(isDefinitionFirst)),
+      loadCards: (cards) => dispatch(loadCards(cards)),
+      loadCardsAsync: (cards) => loadCardsAsync(cards)(dispatch),
     }),
   ),
   withState('isExtended', 'setIsExtended', false))(

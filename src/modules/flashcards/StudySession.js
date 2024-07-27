@@ -17,19 +17,6 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
   const [studyCards, setStudyCards] = useState([]);
 
   useEffect(() => {
-    loadCardsAsync([
-      {
-        definition: 'the definition1',
-        term: 'the term1'
-      },
-      {
-        definition: 'the definition2',
-        term: 'the term2'
-      }
-    ]);
-  }, []);
-
-  useEffect(() => {
     setStudyCards((cards ?? []).map(c => ({...c, front: isDefinitionFirst ? c.definition : c.term, back: isDefinitionFirst ? c.term : c.definition})));
   }, [cards, isDefinitionFirst]);
 
@@ -59,14 +46,6 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
         marginTop={110}
       >
       </Swiper>
-      {/* <Button */}
-      {/*   style={[styles.button]} */}
-      {/*   primary */}
-      {/*   caption="Test Button" */}
-      {/*   onPress={() => { */}
-      {/*     loadCardsAsync(cards?.map(c => ({term: c.term + '1', definition: c.definition + '1'}))); */}
-      {/*   }} */}
-      {/* /> */}
     </View>
   );
 }

@@ -8,7 +8,32 @@ import {
 import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, isDefinitionFirst, isDefinitionFirstSet }) {
+const basicCards = [
+  {
+    term: 'the term1',
+    definition: 'the definition1',
+  },
+  {
+    term: 'the term2',
+    definition: 'the definition2',
+  }
+];
+
+const firstSet = "firstSet";
+const secondSet = "secondSet";
+
+const cardSetNames = [firstSet, secondSet];
+
+const cardSets = {
+  [firstSet]: {
+    cards: basicCards.map(c => ({term: `${firstSet} ${c.term}`, definition: `${firstSet} ${c.definition}`})),
+  },
+  [secondSet]: {
+    cards: basicCards.map(c => ({term: `${secondSet} ${c.term}`, definition: `${secondSet} ${c.definition}`})),
+  },
+};
+
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, isDefinitionFirst, isDefinitionFirstSet, loadCards, loadCardsAsync }) {
 
   const [selectedFirstIndex, setSelectedFirstIndex] = useState(isDefinitionFirst ? 1 : 0);
 
@@ -32,17 +57,18 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
               onChange={setIsDefinitionFirst}
             />
           </View>
-          <Text size={20} white>
-            TODO: make this a dynamic table of study card options
-          </Text>
-          <Button
-            style={[styles.button]}
-            primary
-            caption="Study Cards 01"
-            onPress={() => {
-              navigation.navigate('StudySession')
-            }}
-          />
+          {cardSetNames.map(cn => (
+            <Button
+              key={cn}
+              style={[styles.button]}
+              primary
+              caption={cn}
+              onPress={() => {
+                loadCards(cardSets[cn].cards);
+                navigation.navigate('Study Session');
+              }}
+            />
+          ))}
           <Button
             style={[styles.button]}
             primary
@@ -58,8 +84,6 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-around',
   },
   bgImage: {
     flex: 1,
