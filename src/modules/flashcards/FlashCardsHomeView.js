@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   ImageBackground,
+  FlatList,
 } from 'react-native';
 
 import { Text } from '../../components/StyledText';
@@ -31,6 +32,23 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
     isDefinitionFirstSet(index === 1);
   };
 
+  const renderCardNameItem = ({ item }) => {
+    return (
+      <Button
+        key={item}
+        style={styles.button}
+        caption={item}
+        onPress={() => {
+          const selectedSet = cardSets.find(c => c.name === item);
+          if (selectedSet) {
+            loadCards(selectedSet.cards);
+            navigation.navigate('Study Session');
+          }
+        }}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -53,18 +71,12 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             </Text>
           </View>
           <ScrollView style={styles.cardSetNames}>
-          {cardSetNames.map(cn => (
-            <Button
-              key={cn}
-              style={[styles.button]}
-              primary
-              caption={cn}
-              onPress={() => {
-                loadCards(cardSets.find(c => c.name === cn).cards);
-                navigation.navigate('Study Session');
-              }}
-            />
-          ))}
+          <FlatList
+            keyExtractor={item => item}
+            style={{ backgroundColor: '#000000', paddingHorizontal: 15 }}
+            data={cardSetNames}
+            renderItem={renderCardNameItem}
+          />
           </ScrollView>
           <Button
             style={[styles.button]}
