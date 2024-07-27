@@ -14,6 +14,10 @@ npx react-native run-android
 
 npx react-native run-ios
 
+## Running with reset cache
+
+npx react-native start --reset-cache
+
 # Very detailed logs
 
 npx react-native log-android
