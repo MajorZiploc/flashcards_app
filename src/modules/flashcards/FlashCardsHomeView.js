@@ -70,14 +70,14 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
               <Text style={styles.cardSetNamesTitle}>Cards</Text>
             </Text>
           </View>
-          <ScrollView style={styles.cardSetNames}>
+          <View style={styles.cardSetNames}>
           <FlatList
             keyExtractor={item => item}
             style={{ backgroundColor: '#000000', paddingHorizontal: 15 }}
             data={cardSetNames}
             renderItem={renderCardNameItem}
           />
-          </ScrollView>
+          </View>
           <Button
             style={[styles.button]}
             primary
