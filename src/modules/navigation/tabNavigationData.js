@@ -1,4 +1,3 @@
-import HomeScreen from '../home/HomeViewContainer';
 import FlashCardsHomeScreen from '../flashcards/FlashCardsHomeViewContainer';
 import GridsScreen from '../grids/GridsViewContainer';
 import PagesScreen from '../pages/PagesViewContainer';
@@ -10,11 +9,6 @@ const iconPages = require('../../../assets/images/tabbar/pages.png');
 const iconComponents = require('../../../assets/images/tabbar/components.png');
 
 const tabNavigationData = [
-  {
-    name: 'Home',
-    component: HomeScreen,
-    icon: iconHome,
-  },
   {
     name: 'Flash Cards',
     component: FlashCardsHomeScreen,

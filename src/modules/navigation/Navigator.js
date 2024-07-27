@@ -18,10 +18,6 @@ const iconBlog = require('../../../assets/images/drawer/blog.png')
 
 const drawerData = [
   {
-    name: 'Home',
-    icon: iconHome,
-  },
-  {
     name: 'Flash Cards',
     icon: iconHome,
   },
