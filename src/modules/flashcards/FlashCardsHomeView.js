@@ -8,7 +8,7 @@ import {
 
 import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 
 
@@ -27,6 +27,7 @@ const cardSets = cardSetNames.map(cn => ({
 export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, isDefinitionFirst, isDefinitionFirstSet, loadCards, loadCardsAsync }) {
 
   const [selectedFirstIndex, setSelectedFirstIndex] = useState(isDefinitionFirst ? 1 : 0);
+  const [query, setQuery] = useState('');
 
   const setIsDefinitionFirst = (index) => {
     setSelectedFirstIndex(index);
@@ -68,14 +69,20 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <View style={styles.cardSetNamesTitleBox}>
             <Text>
               <Icon name="documents" size={25} color="white" />
-              <Text style={styles.cardSetNamesTitle}>Cards</Text>
             </Text>
+            <Text style={styles.cardSetNamesTitle}>Desks</Text>
+              <TextInput
+                placeholder='Search Decks'
+                style={styles.searchBox}
+                value={query}
+                onChangeText={setQuery}
+              />
           </View>
           <View style={styles.cardSetNames}>
           <FlatList
             keyExtractor={item => item}
             style={{ backgroundColor: '#000000', paddingHorizontal: 15 }}
-            data={cardSetNames}
+            data={cardSetNames.filter(cn => cn.toLowerCase().includes(query.toLowerCase()))}
             renderItem={renderCardNameItem}
           />
           </View>
@@ -119,8 +126,19 @@ const styles = StyleSheet.create({
   cardSetNamesTitle: {
     color: '#FFFFFF',
     fontSize: 30,
+    marginLeft: 4,
   },
   cardSetNamesTitleBox: {
-    display: 'flex',
+    flexDirection: 'row',
+    flexBasis: 'auto',
+    alignItems: 'center',
+    marginBottom: 4,
+    marginTop: 4,
+  },
+  searchBox: {
+    backgroundColor: "#FFFFFF",
+    marginLeft: 10,
+    flexGrow: 3,
+    marginRight: 10,
   }
 });
