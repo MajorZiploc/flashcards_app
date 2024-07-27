@@ -9,7 +9,8 @@ import {
 import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 import { ScrollView } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Entypo';
+
 
 const basicCards = [...Array(5).keys()].map((_, idx) => ({
   term: `the term ${idx}`,
@@ -66,7 +67,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           </View>
           <View style={styles.cardSetNamesTitleBox}>
             <Text>
-              <Icon name="view-list" size={25} color="white" />
+              <Icon name="documents" size={25} color="white" />
               <Text style={styles.cardSetNamesTitle}>Cards</Text>
             </Text>
           </View>
