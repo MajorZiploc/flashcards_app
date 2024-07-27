@@ -4,7 +4,6 @@ import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { colors, fonts } from '../../styles';
 
 const chartIcon = require('../../../assets/images/pages/chart.png');
-const calendarIcon = require('../../../assets/images/pages/calendar.png');
 const chatIcon = require('../../../assets/images/pages/chat.png');
 const galleryIcon = require('../../../assets/images/pages/gallery.png');
 const profileIcon = require('../../../assets/images/pages/profile.png');
@@ -60,17 +59,6 @@ export default function PagesScreen(props) {
             style={styles.itemImage}
           />
           <Text style={styles.itemText}>Chats</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Calendar')}
-          style={styles.item}
-        >
-          <Image
-            resizeMode="contain"
-            source={calendarIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Calendar</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Auth')}

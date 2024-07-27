@@ -51,9 +51,6 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
               <Icon name="view-list" size={25} color="white" />
               <Text style={styles.cardSetNamesTitle}>Cards</Text>
             </Text>
-            {/* <Text> */}
-            {/*   <Icon name="cards-playing-diamond-multiple" size={20} color="white" /> */}
-            {/* </Text> */}
           </View>
           <ScrollView style={styles.cardSetNames}>
           {cardSetNames.map(cn => (
