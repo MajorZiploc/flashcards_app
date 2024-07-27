@@ -38,12 +38,12 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
       <Swiper
         cards={studyCards}
         renderCard={(cardData, idx) => <StudyCard cardData={cardData} idx={idx} />}
-        onSwipedTop={index => {
-          console.log('onSwipedTop');
+        onSwipedLeft={index => {
+          console.log('onSwipedLeft');
           console.log(index);
         }}
-        onSwipedBottom={index => {
-          console.log('onSwipedBottom');
+        onSwipedRight={index => {
+          console.log('onSwipedRight');
           console.log(index);
         }}
         onSwipedAll={() => {
@@ -52,8 +52,8 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
         animateOverlayLabelsOpacity
         animateCardOpacity
         backgroundColor={Gray50}
-        horizontalSwipe={false}
-        verticalSwipe={true}
+        horizontalSwipe={true}
+        verticalSwipe={false}
         cardVerticalMargin={0}
         cardHorizontalMargin={0}
         marginTop={110}
