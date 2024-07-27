@@ -7,31 +7,20 @@ import {
 
 import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
+import { ScrollView } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const basicCards = [
-  {
-    term: 'the term1',
-    definition: 'the definition1',
-  },
-  {
-    term: 'the term2',
-    definition: 'the definition2',
-  }
-];
+const basicCards = [...Array(5).keys()].map((_, idx) => ({
+  term: `the term ${idx}`,
+  definition: `the definition ${idx}`,
+}));
 
-const firstSet = "firstSet";
-const secondSet = "secondSet";
+const cardSetNames = [...Array(50).keys()].map((_, idx) => `Set ${idx}`);
 
-const cardSetNames = [firstSet, secondSet];
-
-const cardSets = {
-  [firstSet]: {
-    cards: basicCards.map(c => ({term: `${firstSet} ${c.term}`, definition: `${firstSet} ${c.definition}`})),
-  },
-  [secondSet]: {
-    cards: basicCards.map(c => ({term: `${secondSet} ${c.term}`, definition: `${secondSet} ${c.definition}`})),
-  },
-};
+const cardSets = cardSetNames.map(cn => ({
+  cards: basicCards.map(c => ({term: `${cn} ${c.term}`, definition: `${cn} ${c.definition}`})),
+  name: cn,
+}))
 
 export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, isDefinitionFirst, isDefinitionFirstSet, loadCards, loadCardsAsync }) {
 
@@ -57,6 +46,16 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
               onChange={setIsDefinitionFirst}
             />
           </View>
+          <View style={styles.cardSetNamesTitleBox}>
+            <Text>
+              <Icon name="view-list" size={25} color="white" />
+              <Text style={styles.cardSetNamesTitle}>Cards</Text>
+            </Text>
+            {/* <Text> */}
+            {/*   <Icon name="cards-playing-diamond-multiple" size={20} color="white" /> */}
+            {/* </Text> */}
+          </View>
+          <ScrollView style={styles.cardSetNames}>
           {cardSetNames.map(cn => (
             <Button
               key={cn}
@@ -64,11 +63,12 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
               primary
               caption={cn}
               onPress={() => {
-                loadCards(cardSets[cn].cards);
+                loadCards(cardSets.find(c => c.name === cn).cards);
                 navigation.navigate('Study Session');
               }}
             />
           ))}
+          </ScrollView>
           <Button
             style={[styles.button]}
             primary
@@ -93,7 +93,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  cardSetNames: {
+    flex: 1,
+    paddingHorizontal: 20,
   },
   button: {
     marginTop: 8,
@@ -103,4 +106,11 @@ const styles = StyleSheet.create({
     height: 50,
     width: 150,
   },
+  cardSetNamesTitle: {
+    color: '#FFFFFF',
+    fontSize: 30,
+  },
+  cardSetNamesTitleBox: {
+    display: 'flex',
+  }
 });
