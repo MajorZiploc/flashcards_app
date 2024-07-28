@@ -2,7 +2,6 @@ import React from 'react';
 import { TouchableOpacity, Image } from 'react-native';
 
 import TabNavigator from './MainTabNavigator';
-import GalleryScreen from '../gallery/GalleryViewContainer';
 import AvailableInFullVersion from '../../modules/availableInFullVersion/AvailableInFullVersionViewContainer';
 
 // import ProfileScreen from '../profile/ProfileViewContainer';
@@ -58,17 +57,6 @@ const StackNavigationData = [
   {
     name: 'Blog',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Gallery',
-    component: GalleryScreen,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
