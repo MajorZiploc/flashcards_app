@@ -43,7 +43,7 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
         verticalSwipe={false}
         cardVerticalMargin={0}
         cardHorizontalMargin={0}
-        marginTop={110}
+        marginTop={10}
       >
       </Swiper>
     </View>
