@@ -11,17 +11,12 @@ import NavigatorView from './RootNavigation';
 import AvailableInFullVersion from '../../modules/availableInFullVersion/AvailableInFullVersionViewContainer';
 
 const iconHome = require('../../../assets/images/drawer/home.png');
-const iconGrids = require('../../../assets/images/drawer/grids.png');
 const iconComponents = require('../../../assets/images/drawer/components.png');
 
 const drawerData = [
   {
     name: 'Flash Cards',
     icon: iconHome,
-  },
-  {
-    name: 'Grids',
-    icon: iconGrids,
   },
   {
     name: 'Components',
