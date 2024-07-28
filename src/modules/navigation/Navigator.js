@@ -5,6 +5,7 @@ import {
   DrawerItem,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 import NavigatorView from './RootNavigation';
 
 import AvailableInFullVersion from '../../modules/availableInFullVersion/AvailableInFullVersionViewContainer';
@@ -82,15 +83,7 @@ function CustomDrawerContent(props) {
 export default function App() {
 
   return (
-    <Drawer.Navigator
-      drawerStyle={{
-        backgroundColor: '#3C38B1',
-      }}
-      drawerContent={props => <CustomDrawerContent {...props} />}
-    >
-      <Drawer.Screen name="Homes" component={NavigatorView} />
-
-    </Drawer.Navigator>
+      <NavigatorView />
   );
 }
 

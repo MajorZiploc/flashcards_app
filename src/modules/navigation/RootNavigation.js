@@ -13,35 +13,16 @@ export default function NavigatorView(props) {
   // }
   // return <AuthScreen />;
 
-  const headerLeftComponentMenu = () => {
-    return (
-      <TouchableOpacity
-        onPress={() => props.navigation.toggleDrawer()}
-        style={{
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-        }}
-      >
-        <Image
-          source={require('../../../assets/images/drawer/menu.png')}
-          resizeMode="contain"
-          style={{
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>    
-    )
-  }
-
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='Flash Cards'>
       {StackNavigationData.map((item, idx) => (
         <Stack.Screen
           key={`stack_item-${idx+1}`}
           name={item.name} 
           component={item.component} 
           options={{
-            headerLeft: item.headerLeft || headerLeftComponentMenu,
+            headerShown: item.headerShown,
+            headerLeft: item.headerLeft,
             headerBackground: () => (
               <Image style={styles.headerImage} source={item.headerBackground.source} />
             ),

@@ -42,13 +42,7 @@ const StackNavigationData = [
   {
     name: 'Flashcards App',
     component: TabNavigator,
-    headerLeft: null,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-    },
+    headerShown: false,
   },
   {
     name: 'Charts',
