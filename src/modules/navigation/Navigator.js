@@ -13,7 +13,6 @@ import AvailableInFullVersion from '../../modules/availableInFullVersion/Availab
 const iconHome = require('../../../assets/images/drawer/home.png');
 const iconGrids = require('../../../assets/images/drawer/grids.png');
 const iconComponents = require('../../../assets/images/drawer/components.png');
-const iconBlog = require('../../../assets/images/drawer/blog.png')
 
 const drawerData = [
   {
@@ -62,19 +61,6 @@ function CustomDrawerContent(props) {
           onPress={() => props.navigation.navigate(item.name)}
         />
       ))}
-      <View style={styles.divider} />
-      <DrawerItem
-        label={() => (
-          <View style={styles.menuLabelFlex}>
-            <Image
-              style={{ width: 20, height: 20}}
-              source={iconBlog}
-            />
-            <Text style={styles.menuTitle}>Blog</Text>
-          </View>
-        )}
-        onPress={() => props.navigation.navigate('Blog')}
-      />
       <View style={styles.divider} />
     </DrawerContentScrollView>
   );
