@@ -24,15 +24,8 @@ const cardSets = cardSetNames.map(cn => ({
   name: cn,
 }))
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, isDefinitionFirst, isDefinitionFirstSet, loadCards, loadCardsAsync }) {
-
-  const [selectedFirstIndex, setSelectedFirstIndex] = useState(isDefinitionFirst ? 1 : 0);
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync }) {
   const [query, setQuery] = useState('');
-
-  const setIsDefinitionFirst = (index) => {
-    setSelectedFirstIndex(index);
-    isDefinitionFirstSet(index === 1);
-  };
 
   const renderCardNameItem = ({ item }) => {
     return (
@@ -59,13 +52,6 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         resizeMode="cover"
       >
         <View style={styles.section}>
-          <View style={[styles.radioFirst]}>
-            <RadioGroup
-              selectedIndex={selectedFirstIndex}
-              items={['term', 'definition']}
-              onChange={setIsDefinitionFirst}
-            />
-          </View>
           <View style={styles.cardSetNamesTitleBox}>
             <Text>
               <Icon name="documents" size={25} color="white" />
@@ -118,10 +104,6 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 8,
     marginBottom: 8,
-  },
-  radioFirst: {
-    height: 50,
-    width: 150,
   },
   cardSetNamesTitle: {
     color: '#FFFFFF',
