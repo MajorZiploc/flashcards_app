@@ -12,7 +12,6 @@ import AvailableInFullVersion from '../../modules/availableInFullVersion/Availab
 const iconHome = require('../../../assets/images/drawer/home.png');
 const iconGrids = require('../../../assets/images/drawer/grids.png');
 const iconComponents = require('../../../assets/images/drawer/components.png');
-const iconSettings = require('../../../assets/images/drawer/settings.png');
 const iconBlog = require('../../../assets/images/drawer/blog.png')
 
 const drawerData = [
@@ -27,10 +26,6 @@ const drawerData = [
   {
     name: 'Components',
     icon: iconComponents,
-  },
-  {
-    name: 'Settings',
-    icon: iconSettings,
   },
 ];
 

@@ -78,6 +78,14 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             caption="Import Cards"
             onPress={() => {}}
           />
+          <Button
+            style={[styles.button]}
+            primary
+            caption="Settings"
+            onPress={() => {
+              navigation.navigate('Settings');
+            }}
+          />
         </View>
       </ImageBackground>
     </View>

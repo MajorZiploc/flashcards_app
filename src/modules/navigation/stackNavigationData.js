@@ -14,6 +14,7 @@ import AvailableInFullVersion from '../../modules/availableInFullVersion/Availab
 
 import { colors, fonts } from '../../styles';
 import StudySessionContainer from '../flashcards/StudySessionContainer';
+import SettingsContainer from '../flashcards/SettingsContainer';
 
 const headerLeftComponent = (props) => {
   return (
@@ -140,6 +141,17 @@ const StackNavigationData = [
   {
     name: 'Study Session',
     component: StudySessionContainer,
+    headerLeft: headerLeftComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Settings',
+    component: SettingsContainer,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
