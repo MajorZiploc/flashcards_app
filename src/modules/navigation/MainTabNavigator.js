@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Text, View, Image, StyleSheet, Platform } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { colors } from '../../styles';
 
 import tabNavigationData from './tabNavigationData';
 
-const Tab = createBottomTabNavigator();
+const Tab = createDrawerNavigator();
 
-export default function BottomTabs() {
+export default function DrawItems() {
   return (
     <Tab.Navigator tabBarOptions={{style: {height: Platform.OS === 'ios' ? 90 : 50}}}>
       {tabNavigationData.map((item, idx) => (

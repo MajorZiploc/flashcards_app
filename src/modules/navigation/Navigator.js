@@ -94,6 +94,7 @@ export default function App() {
       drawerContent={props => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="Homes" component={NavigatorView} />
+
     </Drawer.Navigator>
   );
 }
