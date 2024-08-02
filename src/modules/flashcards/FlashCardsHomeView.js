@@ -10,7 +10,7 @@ import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
-import {createTable, getDBConnection, getTodoItems, saveTodoItems} from './SqliteData';
+import {createDeckTable, getDBConnection, getDeckItems, saveDecks} from './SqliteData';
 
 
 const basicCards = [...Array(5).keys()].map((_, idx) => ({
@@ -27,23 +27,23 @@ const cardSets = cardSetNames.map(cn => ({
 
 export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync }) {
   const [query, setQuery] = useState('');
-  const [todos, setTodos] = useState([]);
+  const [decks, setDecks] = useState([]);
 
-  console.log('todos');
-  console.log(todos);
+  console.log('decks');
+  console.log(decks);
 
   useEffect(() => {
     (async () => {
       try {
-        const initTodos = [{ id: 0, value: 'go to shop' }, { id: 1, value: 'eat at least a one healthy foods' }, { id: 2, value: 'Do some exercises' }];
+        const initDecks = [{ name: 'Bio1' }, { name: 'CS1' }, { name: 'Math1' }];
         const db = await getDBConnection();
-        await createTable(db);
-        const storedTodoItems = await getTodoItems(db);
-        if (storedTodoItems.length) {
-          setTodos(storedTodoItems);
+        await createDeckTable(db);
+        const storedDecks = await getDeckItems(db);
+        if (storedDecks.length) {
+          setDecks(storedDecks);
         } else {
-          await saveTodoItems(db, initTodos);
-          setTodos(initTodos);
+          await saveDecks(db, initDecks);
+          setDecks(initDecks);
         }
       } catch (error) {
         console.error(error);
@@ -80,7 +80,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             <Text>
               <Icon name="documents" size={25} color="white" />
             </Text>
-            <Text style={styles.cardSetNamesTitle}>Desks</Text>
+            <Text style={styles.cardSetNamesTitle}>Decks</Text>
               <TextInput
                 placeholder='Search Decks'
                 style={styles.searchBox}

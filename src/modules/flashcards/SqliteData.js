@@ -1,7 +1,9 @@
 import { enablePromise, openDatabase } from 'react-native-sqlite-storage';
-import { ToDoItem } from '../models';
 
-const tableName = 'todoData';
+/**
+ * @typedef {import('../interfaces').DBCard} DBCard
+ * @typedef {import('../interfaces').DBDeck} DBDeck
+ */
 
 enablePromise(true);
 
@@ -10,7 +12,7 @@ enablePromise(true);
  * @returns {Promise<SQLiteDatabase>}
  */
 export const getDBConnection = async () => {
-  return openDatabase({ name: 'todo-data.db', location: 'default' });
+  return openDatabase({ name: 'flashcards-data.db', location: 'default' });
 };
 
 /**
@@ -18,46 +20,46 @@ export const getDBConnection = async () => {
  * @param {SQLiteDatabase} db - The database connection.
  * @returns {Promise<void>}
  */
-export const createTable = async (db) => {
-  const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-        value TEXT NOT NULL
+export const createDeckTable = async (db) => {
+  const query = `CREATE TABLE IF NOT EXISTS Deck(
+    "id" char(36) default (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6)))), 
+    "name" varchar(255) NOT NULL,
+    primary key ("id")
     );`;
-
   await db.executeSql(query);
 };
 
 /**
  * Get all ToDo items from the database.
  * @param {SQLiteDatabase} db - The database connection.
- * @returns {Promise<ToDoItem[]>}
+ * @returns {Promise<DBDeck[]>}
  */
-export const getTodoItems = async (db) => {
+export const getDeckItems = async (db) => {
   try {
-    const todoItems = [];
-    const results = await db.executeSql(`SELECT rowid as id, value FROM ${tableName}`);
+    const items = [];
+    const results = await db.executeSql(`SELECT id, name FROM Deck`);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
-        todoItems.push(result.rows.item(index));
+        items.push(result.rows.item(index));
       }
     });
-    return todoItems;
+    return items;
   } catch (error) {
     console.error(error);
-    throw Error('Failed to get todoItems !!!');
+    throw Error('Failed to get decks !!!');
   }
 };
 
 /**
  * Save ToDo items to the database.
  * @param {SQLiteDatabase} db - The database connection.
- * @param {ToDoItem[]} todoItems - The ToDo items to save.
+ * @param {DBDeck[]} items - The ToDo items to save.
  * @returns {Promise<void>}
  */
-export const saveTodoItems = async (db, todoItems) => {
+export const saveDecks = async (db, items) => {
   const insertQuery =
-    `INSERT OR REPLACE INTO ${tableName}(rowid, value) values` +
-    todoItems.map(i => `(${i.id}, '${i.value}')`).join(',');
-
+    `INSERT OR REPLACE INTO Deck(name) values` +
+    items.map(i => `('${i.name}')`).join(',');
   return db.executeSql(insertQuery);
 };
 
@@ -67,18 +69,18 @@ export const saveTodoItems = async (db, todoItems) => {
  * @param {number} id - The ID of the ToDo item to delete.
  * @returns {Promise<void>}
  */
-export const deleteTodoItem = async (db, id) => {
-  const deleteQuery = `DELETE from ${tableName} where rowid = ${id}`;
+export const deleteDeck = async (db, id) => {
+  const deleteQuery = `DELETE from Deck where id = ${id}`;
   await db.executeSql(deleteQuery);
 };
 
 /**
  * Delete the table from the database.
  * @param {SQLiteDatabase} db - The database connection.
+ * @param {string} tableName
  * @returns {Promise<void>}
  */
-export const deleteTable = async (db) => {
+export const deleteTable = async (db, tableName) => {
   const query = `drop table ${tableName}`;
-
   await db.executeSql(query);
 };
