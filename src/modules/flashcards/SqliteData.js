@@ -7,6 +7,8 @@ import { enablePromise, openDatabase, SQLiteDatabase } from 'react-native-sqlite
 
 enablePromise(true);
 
+const genUuid = `char(36) default (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))`;
+
 /** @type {() => Promise<SQLiteDatabase>} */
 export const getDBConnection = async () => {
   return openDatabase({ name: 'flashcards-data.db', location: 'default' });
@@ -38,7 +40,7 @@ export const dropDeckTable  = async (db) => {
 /** @type {(db: SQLiteDatabase) => Promise<void>} */
 export const createDeckTable = async (db) => {
   const query = `CREATE TABLE IF NOT EXISTS Deck(
-    "id" char(36) default (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6)))), 
+    "id" ${genUuid} NOT NULL,
     "name" varchar(255) NOT NULL,
     primary key ("id")
     );`;
@@ -61,4 +63,13 @@ export const saveDecks = async (db, items) => {
 /** @type {(db: SQLiteDatabase, id: string) => Promise<void>} */
 export const deleteDeck = async (db, id) => {
   await db.executeSql('DELETE from Deck where id = ?', [id]);
+};
+
+/** @type {(db: SQLiteDatabase) => Promise<void>} */
+export const createCardTable = async (db) => {
+  const query = `CREATE TABLE IF NOT EXISTS Card(
+    "id" ${genUuid}
+    primary key ("id")
+    );`;
+  await db.executeSql(query);
 };
