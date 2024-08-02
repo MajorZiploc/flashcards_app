@@ -75,20 +75,47 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
     })();
   }, [decks]);
 
-  const renderCardNameItem = ({ item }) => {
+  const renderCardNameItem = ({item}) => {
     return (
-      <Button
-        key={item}
-        style={styles.button}
-        caption={item}
-        onPress={() => {
-          const selectedSet = cardSets.find(c => c.name === item);
-          if (selectedSet) {
-            loadCards(selectedSet.cards);
-            navigation.navigate('Study Session');
-          }
-        }}
-      />
+      <View style={styles.cardContainer}>
+        <TouchableOpacity
+          style={styles.cardButton}
+        >
+          <View>
+            <Text style={styles.cardText}>{item}</Text>
+          </View>
+        </TouchableOpacity>
+        <View style={{flexDirection: "row"}}>
+          <TouchableOpacity
+            style={styles.deckActionButton}
+            onPress={() => {
+              // Stub for delete logic
+            }}
+          >
+            <Icon name="trash" size={25} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.deckActionButton}
+            onPress={() => {
+              // Stub for edit logic
+            }}
+          >
+            <Icon name="edit" size={25} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.deckActionButton}
+            onPress={() => {
+              const selectedSet = cardSets.find(c => c.name === item);
+              if (selectedSet) {
+                loadCards(selectedSet.cards);
+                navigation.navigate('Study Session');
+              }
+            }}
+          >
+            <Icon name="controller-play" size={25} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   };
 
@@ -180,5 +207,27 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flexGrow: 3,
     marginRight: 10,
-  }
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+    elevation: 2,
+  },
+  cardButton: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  cardText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  deckActionButton: {
+    marginLeft: 10,
+    padding: 5,
+  },
 });
