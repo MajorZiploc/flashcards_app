@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,6 +10,7 @@ import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
+import {createTable, getDBConnection, getTodoItems, saveTodoItems} from './SqliteData';
 
 
 const basicCards = [...Array(5).keys()].map((_, idx) => ({
@@ -26,6 +27,29 @@ const cardSets = cardSetNames.map(cn => ({
 
 export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync }) {
   const [query, setQuery] = useState('');
+  const [todos, setTodos] = useState([]);
+
+  console.log('todos');
+  console.log(todos);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const initTodos = [{ id: 0, value: 'go to shop' }, { id: 1, value: 'eat at least a one healthy foods' }, { id: 2, value: 'Do some exercises' }];
+        const db = await getDBConnection();
+        await createTable(db);
+        const storedTodoItems = await getTodoItems(db);
+        if (storedTodoItems.length) {
+          setTodos(storedTodoItems);
+        } else {
+          await saveTodoItems(db, initTodos);
+          setTodos(initTodos);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   const renderCardNameItem = ({ item }) => {
     return (
