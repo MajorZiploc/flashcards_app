@@ -123,8 +123,10 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <Button
             style={[styles.button]}
             primary
-            caption="Import Cards"
-            onPress={() => {}}
+            caption="Create Deck"
+            onPress={() => {
+              navigation.navigate('Create Deck');
+            }}
           />
           <Button
             style={[styles.button]}
