@@ -14,16 +14,15 @@ export const getDBConnection = async () => {
   return openDatabase({ name: 'flashcards-data.db', location: 'default' });
 };
 
-/** @type {(db: SQLiteDatabase, query: string, params?: any[]) => Promise<DBDeck[]>} */
+/** @type {(db: SQLiteDatabase, query: string, params?: any[]) => Promise<any[]>} */
 export const getItems = async (db, query, params) => {
   try {
     const results = await db.executeSql(query, params);
-    const items = results.flatMap(result => {
-      const items = [];
+    const items = [];
+    results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         items.push(result.rows.item(index));
       }
-      return items;
     });
     return items;
   } catch (error) {
@@ -34,7 +33,10 @@ export const getItems = async (db, query, params) => {
 
 /** @type {(db: SQLiteDatabase) => Promise<void>} */
 export const dropDeckTable  = async (db) => {
-  await db.executeSql('drop table Deck');
+  try {
+    await db.executeSql('drop table Deck');
+  } catch(err) {
+  }
 };
 
 /** @type {(db: SQLiteDatabase) => Promise<void>} */
@@ -56,7 +58,6 @@ export const getDecks = async (db) => {
 export const saveDecks = async (db, items) => {
   const insertQuery = `INSERT OR REPLACE INTO Deck(name) VALUES ${items.map(() => '(?)').join(',')}`;
   const params = items.map(i => i.name);
-  
   return db.executeSql(insertQuery, params);
 };
 
@@ -68,7 +69,10 @@ export const deleteDeck = async (db, id) => {
 /** @type {(db: SQLiteDatabase) => Promise<void>} */
 export const createCardTable = async (db) => {
   const query = `CREATE TABLE IF NOT EXISTS Card(
-    "id" ${genUuid}
+    "id" ${genUuid} NOT NULL,
+    "term" text NOT NULL,
+    "definition" text NOT NULL,
+    "deckId" char(36) NOT NULL,
     primary key ("id")
     );`;
   await db.executeSql(query);
@@ -76,10 +80,23 @@ export const createCardTable = async (db) => {
 
 /** @type {(db: SQLiteDatabase) => Promise<void>} */
 export const dropCardTable  = async (db) => {
-  await db.executeSql('drop table Card');
+  try {
+    await db.executeSql('drop table Card');
+  } catch(err) {
+  }
 };
 
-/** @type {(db: SQLiteDatabase) => Promise<DBDeck[]>} */
+/** @type {(db: SQLiteDatabase, deckId: string) => Promise<DBCard[]>} */
 export const getCards = async (db, deckId) => {
+  // console.log(getItems2(db, 'SELECT id, term, definition, deckId FROM Card WHERE deckId = ?', [deckId]));
   return getItems(db, 'SELECT id, term, definition, deckId FROM Card WHERE deckId = ?', [deckId]);
+};
+
+/** @type {(db: SQLiteDatabase, items: DBCard[], deck: DBDeck) => Promise<void>} */
+export const saveCards = async (db, items, deck) => {
+  const insertQuery = `INSERT OR REPLACE INTO Card(term, definition, deckId) VALUES ${items.map(() => '(?, ?, ?)').join(',')}`;
+  const params = items.flatMap(i => [i.term, i.definition, deck.id]);
+  // console.log('params');
+  // console.log(params);
+  return db.executeSql(insertQuery, params);
 };

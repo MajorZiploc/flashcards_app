@@ -2,7 +2,7 @@ export interface DBCard {
   id: any;
   term: string;
   definition: string;
-  deck_id: any;
+  deckId: any;
 }
 
 export interface DBDeck {

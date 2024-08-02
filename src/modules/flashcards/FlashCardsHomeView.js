@@ -10,7 +10,7 @@ import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
-import {createDeckTable, dropDeckTable, getDBConnection, getDecks, saveDecks} from './SqliteData';
+import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 
 
 const basicCards = [...Array(5).keys()].map((_, idx) => ({
@@ -52,6 +52,28 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (!decks) return;
+      try {
+        const db = await getDBConnection();
+        await dropCardTable(db);
+        const initCards = basicCards;
+        await createCardTable(db);
+        for (const deck of decks) {
+          saveCards(db, initCards, deck);
+        }
+        for (const deck of decks) {
+          const dbCards = await getCards(db, deck.id);
+          console.log('dbCards');
+          console.log(dbCards);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [decks]);
 
   const renderCardNameItem = ({ item }) => {
     return (
