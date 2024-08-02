@@ -48,7 +48,7 @@ export const createDeckTable = async (db) => {
 };
 
 /** @type {(db: SQLiteDatabase) => Promise<DBDeck[]>} */
-export const getDeckItems = async (db) => {
+export const getDecks = async (db) => {
   return getItems(db, 'SELECT id, name FROM Deck');
 };
 
@@ -72,4 +72,14 @@ export const createCardTable = async (db) => {
     primary key ("id")
     );`;
   await db.executeSql(query);
+};
+
+/** @type {(db: SQLiteDatabase) => Promise<void>} */
+export const dropCardTable  = async (db) => {
+  await db.executeSql('drop table Card');
+};
+
+/** @type {(db: SQLiteDatabase) => Promise<DBDeck[]>} */
+export const getCards = async (db, deckId) => {
+  return getItems(db, 'SELECT id, term, definition, deckId FROM Card WHERE deckId = ?', [deckId]);
 };
