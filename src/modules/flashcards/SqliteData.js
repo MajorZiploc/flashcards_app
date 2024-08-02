@@ -88,7 +88,6 @@ export const dropCardTable  = async (db) => {
 
 /** @type {(db: SQLiteDatabase, deckId: string) => Promise<DBCard[]>} */
 export const getCards = async (db, deckId) => {
-  // console.log(getItems2(db, 'SELECT id, term, definition, deckId FROM Card WHERE deckId = ?', [deckId]));
   return getItems(db, 'SELECT id, term, definition, deckId FROM Card WHERE deckId = ?', [deckId]);
 };
 
@@ -96,8 +95,6 @@ export const getCards = async (db, deckId) => {
 export const saveCards = async (db, items, deck) => {
   const insertQuery = `INSERT OR REPLACE INTO Card(term, definition, deckId) VALUES ${items.map(() => '(?, ?, ?)').join(',')}`;
   const params = items.flatMap(i => [i.term, i.definition, deck.id]);
-  // console.log('params');
-  // console.log(params);
   return db.executeSql(insertQuery, params);
 };
 
