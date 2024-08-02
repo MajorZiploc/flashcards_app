@@ -61,9 +61,9 @@ export const saveDecks = async (db, items) => {
   return db.executeSql(insertQuery, params);
 };
 
-/** @type {(db: SQLiteDatabase, id: string) => Promise<void>} */
-export const deleteDeck = async (db, id) => {
-  await db.executeSql('DELETE from Deck where id = ?', [id]);
+/** @type {(db: SQLiteDatabase, ids: string[]) => Promise<void>} */
+export const deleteDecks = async (db, ids) => {
+  await db.executeSql(`DELETE from Deck where id in (${ids.map((_) => '?').join(',')})`, ids);
 };
 
 /** @type {(db: SQLiteDatabase) => Promise<void>} */
@@ -99,4 +99,14 @@ export const saveCards = async (db, items, deck) => {
   // console.log('params');
   // console.log(params);
   return db.executeSql(insertQuery, params);
+};
+
+/** @type {(db: SQLiteDatabase, ids: string[]) => Promise<void>} */
+export const deleteCards = async (db, ids) => {
+  await db.executeSql(`DELETE from Card where id in (${ids.map((_) => '?').join(',')})`, ids);
+};
+
+/** @type {(db: SQLiteDatabase, deckIds: string[]) => Promise<void>} */
+export const deleteCardInDecks = async (db, deckIds) => {
+  await db.executeSql(`DELETE from Card where deckId in (${deckIds.map((_) => '?').join(',')})`, deckIds);
 };
