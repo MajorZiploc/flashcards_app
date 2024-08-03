@@ -7,13 +7,9 @@ export interface DBCard {
   deckId: any;
 }
 
-export interface StudyCard {
-  id: any;
-  term: string;
-  definition: string;
+export interface StudyCard extends DBCard {
   front: string;
   back: string;
-  deckId: any;
 }
 
 export interface DBDeck {
