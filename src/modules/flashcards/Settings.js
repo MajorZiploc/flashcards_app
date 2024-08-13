@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
   ImageBackground,
   FlatList,
+  SafeAreaView,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 
 import { Text } from '../../components/StyledText';
-import { Button, RadioGroup } from '../../components';
+import { Button, Dropdown, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 
