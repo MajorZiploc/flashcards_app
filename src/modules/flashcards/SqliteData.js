@@ -49,9 +49,13 @@ export const createDeckTable = async (db) => {
   await db.executeSql(query);
 };
 
-/** @type {(db: SQLiteDatabase) => Promise<DBDeck[]>} */
-export const getDecks = async (db) => {
-  return getItems(db, 'SELECT id, name FROM Deck');
+/** @type {(db: SQLiteDatabase, names?: string[]) => Promise<DBDeck[]>} */
+export const getDecks = async (db, names = []) => {
+  let query = 'SELECT id, name FROM Deck'
+  if (names.length > 0) {
+    query += ` WHERE name in (${names.map(() => '?').join(',')})`;
+  }
+  return getItems(db, query, names);
 };
 
 /** @type {(db: SQLiteDatabase, items: DBDeck[]) => Promise<void>} */

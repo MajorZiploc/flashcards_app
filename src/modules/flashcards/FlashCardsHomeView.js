@@ -12,6 +12,10 @@ import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-ha
 import Icon from 'react-native-vector-icons/Entypo';
 import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 
+/**
+ * @typedef {import('../interfaces').DBCard} DBCard
+ * @typedef {import('../interfaces').DBDeck} DBDeck
+ */
 
 const basicCards = [...Array(5).keys()].map((_, idx) => ({
   term: `the term ${idx}`,
@@ -27,6 +31,7 @@ const cardSets = cardSetNames.map(cn => ({
 
 export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync }) {
   const [query, setQuery] = useState('');
+  /** @type {import('../interfaces').useState<DBDeck[]>} */
   const [decks, setDecks] = useState([]);
 
   console.log('decks');
@@ -36,9 +41,9 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
     (async () => {
       try {
         const db = await getDBConnection();
-        await dropDeckTable(db);
-        const initDecks = [{ name: 'Bio1' }, { name: 'CS1' }, { name: 'Math1' }];
-        await createDeckTable(db);
+        // await dropDeckTable(db);
+        // const initDecks = [{ name: 'Bio1' }, { name: 'CS1' }, { name: 'Math1' }];
+        // await createDeckTable(db);
         const storedDecks = await getDecks(db);
         if (storedDecks.length) {
           setDecks(storedDecks);
@@ -53,27 +58,27 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      if (!decks) return;
-      try {
-        const db = await getDBConnection();
-        await dropCardTable(db);
-        const initCards = basicCards;
-        await createCardTable(db);
-        for (const deck of decks) {
-          saveCards(db, initCards, deck);
-        }
-        for (const deck of decks) {
-          const dbCards = await getCards(db, deck.id);
-          console.log('dbCards');
-          console.log(dbCards);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [decks]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (!decks) return;
+  //     try {
+  //       const db = await getDBConnection();
+  //       await dropCardTable(db);
+  //       const initCards = basicCards;
+  //       await createCardTable(db);
+  //       for (const deck of decks) {
+  //         await saveCards(db, initCards, deck);
+  //       }
+  //       for (const deck of decks) {
+  //         const dbCards = await getCards(db, deck.id);
+  //         console.log('dbCards');
+  //         console.log(dbCards);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   })();
+  // }, [decks]);
 
   const renderCardNameItem = ({item}) => {
     return (
@@ -105,11 +110,15 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <TouchableOpacity
             style={styles.deckActionButton}
             onPress={() => {
-              const selectedSet = cardSets.find(c => c.name === item);
-              if (selectedSet) {
-                loadCards(selectedSet.cards);
-                navigation.navigate('Study Session');
-              }
+              (async () => {
+                const selectedDeck = decks.find(deck => deck.name === item);
+                if (selectedDeck) {
+                  const db = await getDBConnection();
+                  const cards = await getCards(db, selectedDeck.id);
+                  loadCards(cards);
+                  navigation.navigate('Study Session');
+                }
+              })();
             }}
           >
             <Icon name="controller-play" size={25} color="black" />
@@ -132,18 +141,18 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
               <Icon name="documents" size={25} color="white" />
             </Text>
             <Text style={styles.cardSetNamesTitle}>Decks</Text>
-              <TextInput
-                placeholder='Search Decks'
-                style={styles.searchBox}
-                value={query}
-                onChangeText={setQuery}
-              />
+            <TextInput
+              placeholder='Search Decks'
+              style={styles.searchBox}
+              value={query}
+              onChangeText={setQuery}
+            />
           </View>
           <View style={styles.cardSetNames}>
           <FlatList
-            keyExtractor={item => item}
+            keyExtractor={(item, idx) => `${item}-${idx}`}
             style={{ backgroundColor: '#000000', paddingHorizontal: 15 }}
-            data={cardSetNames.filter(cn => cn.toLowerCase().includes(query.toLowerCase()))}
+            data={(decks ?? []).filter(deck => deck.name.toLowerCase().includes(query.toLowerCase())).map(deck => deck.name)}
             renderItem={renderCardNameItem}
           />
           </View>
