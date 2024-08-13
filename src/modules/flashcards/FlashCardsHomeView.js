@@ -4,6 +4,7 @@ import {
   View,
   ImageBackground,
   FlatList,
+  SafeAreaView,
 } from 'react-native';
 
 import { Text } from '../../components/StyledText';
@@ -11,6 +12,7 @@ import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
+import RNFS from 'react-native-fs';
 
 
 const basicCards = [...Array(5).keys()].map((_, idx) => ({
@@ -75,6 +77,24 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
     })();
   }, [decks]);
 
+  const [downloadsFolder, setDownloadsFolder] = useState('');
+  const [documentsFolder, setDocumentsFolder] = useState('');
+  const [externalDirectory, setExternalDirectory] = useState('');
+  useEffect(() => {
+    //get user's file paths from react-native-fs
+    setDownloadsFolder(RNFS.DownloadDirectoryPath);
+    setDocumentsFolder(RNFS.DocumentDirectoryPath); //alternative to MainBundleDirectory.
+    setExternalDirectory(RNFS.ExternalStorageDirectoryPath);
+  }, []);
+
+  const fsStuff = (
+    <SafeAreaView>
+      <Text> Downloads Folder: {downloadsFolder}</Text>
+      <Text>Documents folder: {documentsFolder}</Text>
+      <Text>External storage: {externalDirectory}</Text>
+    </SafeAreaView>
+  );
+
   const renderCardNameItem = ({item}) => {
     return (
       <View style={styles.cardContainer}>
@@ -126,6 +146,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         style={styles.bgImage}
         resizeMode="cover"
       >
+        {fsStuff}
         <View style={styles.section}>
           <View style={styles.cardSetNamesTitleBox}>
             <Text>
