@@ -13,25 +13,9 @@ import { Button, Dropdown, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const folderMetadata = [
-  {
-    label: 'Downloads',
-    value: RNFS.DownloadDirectoryPath,
-  },
-  {
-    label: 'Documents',
-    value: RNFS.DocumentDirectoryPath,
-  },
-  {
-    label: 'External Storage',
-    value: RNFS.ExternalStorageDirectoryPath,
-  },
-];
-
 export default function Settings({ isDefinitionFirst, isDefinitionFirstSet }) {
 
   const [selectedFirstIndex, setSelectedFirstIndex] = useState(isDefinitionFirst ? 1 : 0);
-  const [selectedFolderIndex, setSelectedFolderIndex] = useState(0);
 
   const setIsDefinitionFirst = (index) => {
     setSelectedFirstIndex(index);
@@ -46,12 +30,6 @@ export default function Settings({ isDefinitionFirst, isDefinitionFirstSet }) {
         resizeMode="cover"
       >
         <View style={styles.section}>
-          <Dropdown
-            placeholder="Select a folder..."
-            selectedIndex={selectedFolderIndex}
-            items={folderMetadata.map(f => f.label)}
-            onSelect={(v) => setSelectedFolderIndex(v)}
-          />
           <View style={[styles.radioFirst]}>
             <RadioGroup
               selectedIndex={selectedFirstIndex}
