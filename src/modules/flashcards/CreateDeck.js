@@ -31,7 +31,6 @@ const folderMetadata = [
 
 export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) {
 
-  const [selectedFirstIndex, setSelectedFirstIndex] = useState(isDefinitionFirst ? 1 : 0);
   const [deckName, setDeckName] = useState('');
   const [selectedFolderIndex, setSelectedFolderIndex] = useState(0);
   const [selectedFileIndex, setSelectedFileIndex] = useState(-1);
@@ -59,13 +58,20 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
             placeholder="Select a folder..."
             selectedIndex={selectedFolderIndex}
             items={folderMetadata.map(f => f.label)}
-            onSelect={(v) => setSelectedFolderIndex(v)}
+            onSelect={(idx) => {
+              setSelectedFolderIndex(idx);
+              setDeckName('');
+              setSelectedFileIndex(-1);
+            }}
           />
           <Dropdown
             placeholder="Select a file..."
             selectedIndex={selectedFileIndex}
             items={fileChoices.map(f => f.name)}
-            onSelect={(v) => setSelectedFileIndex(v)}
+            onSelect={(idx) => {
+              setSelectedFileIndex(idx);
+              setDeckName(fileChoices[idx].name);
+            }}
           />
           <TextInput
             placeholder='Deck Name'

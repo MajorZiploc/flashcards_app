@@ -11,6 +11,7 @@ import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
+import RNFS from 'react-native-fs';
 
 /**
  * @typedef {import('../interfaces').DBCard} DBCard
@@ -40,6 +41,9 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
   useEffect(() => {
     (async () => {
       try {
+        const filePath = RNFS.DownloadDirectoryPath + "/autoTestCards.txt";
+        const fileContent = basicCards.map(card => `${card.term} - ${card.definition}`).join("\n");
+        await RNFS.writeFile(filePath, fileContent, "utf8");
         const db = await getDBConnection();
         // await dropDeckTable(db);
         // const initDecks = [{ name: 'Bio1' }, { name: 'CS1' }, { name: 'Math1' }];
