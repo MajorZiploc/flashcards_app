@@ -13,7 +13,12 @@ export const Green = '#007A3D'
 
 export const { width, height } = Dimensions.get('window');
 
+/**
+ * @typedef {import('../interfaces').StudyCard} StudyCard
+ */
+
 function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
+  /** @type {import('../interfaces').useState<StudyCard[]>} */
   const [studyCards, setStudyCards] = useState([]);
 
   useEffect(() => {

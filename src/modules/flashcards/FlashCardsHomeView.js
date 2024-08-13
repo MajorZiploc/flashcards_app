@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,6 +10,7 @@ import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
+import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 
 
 const basicCards = [...Array(5).keys()].map((_, idx) => ({
@@ -26,21 +27,95 @@ const cardSets = cardSetNames.map(cn => ({
 
 export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync }) {
   const [query, setQuery] = useState('');
+  const [decks, setDecks] = useState([]);
 
-  const renderCardNameItem = ({ item }) => {
+  console.log('decks');
+  console.log(decks);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const db = await getDBConnection();
+        await dropDeckTable(db);
+        const initDecks = [{ name: 'Bio1' }, { name: 'CS1' }, { name: 'Math1' }];
+        await createDeckTable(db);
+        const storedDecks = await getDecks(db);
+        if (storedDecks.length) {
+          setDecks(storedDecks);
+        } else {
+          await saveDecks(db, initDecks);
+          const storedDecks = await getDecks(db);
+          setDecks(storedDecks);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (!decks) return;
+      try {
+        const db = await getDBConnection();
+        await dropCardTable(db);
+        const initCards = basicCards;
+        await createCardTable(db);
+        for (const deck of decks) {
+          saveCards(db, initCards, deck);
+        }
+        for (const deck of decks) {
+          const dbCards = await getCards(db, deck.id);
+          console.log('dbCards');
+          console.log(dbCards);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [decks]);
+
+  const renderCardNameItem = ({item}) => {
     return (
-      <Button
-        key={item}
-        style={styles.button}
-        caption={item}
-        onPress={() => {
-          const selectedSet = cardSets.find(c => c.name === item);
-          if (selectedSet) {
-            loadCards(selectedSet.cards);
-            navigation.navigate('Study Session');
-          }
-        }}
-      />
+      <View style={styles.cardContainer}>
+        <TouchableOpacity
+          style={styles.cardButton}
+        >
+          <View>
+            <Text style={styles.cardText}>{item}</Text>
+          </View>
+        </TouchableOpacity>
+        <View style={{flexDirection: "row"}}>
+          <TouchableOpacity
+            style={styles.deckActionButton}
+            onPress={() => {
+              // Stub for delete logic
+            }}
+          >
+            <Icon name="trash" size={25} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.deckActionButton}
+            onPress={() => {
+              // Stub for edit logic
+            }}
+          >
+            <Icon name="edit" size={25} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.deckActionButton}
+            onPress={() => {
+              const selectedSet = cardSets.find(c => c.name === item);
+              if (selectedSet) {
+                loadCards(selectedSet.cards);
+                navigation.navigate('Study Session');
+              }
+            }}
+          >
+            <Icon name="controller-play" size={25} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   };
 
@@ -56,7 +131,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             <Text>
               <Icon name="documents" size={25} color="white" />
             </Text>
-            <Text style={styles.cardSetNamesTitle}>Desks</Text>
+            <Text style={styles.cardSetNamesTitle}>Decks</Text>
               <TextInput
                 placeholder='Search Decks'
                 style={styles.searchBox}
@@ -75,8 +150,10 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <Button
             style={[styles.button]}
             primary
-            caption="Import Cards"
-            onPress={() => {}}
+            caption="Create Deck"
+            onPress={() => {
+              navigation.navigate('Create Deck');
+            }}
           />
           <Button
             style={[styles.button]}
@@ -130,5 +207,27 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flexGrow: 3,
     marginRight: 10,
-  }
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+    elevation: 2,
+  },
+  cardButton: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  cardText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  deckActionButton: {
+    marginLeft: 10,
+    padding: 5,
+  },
 });

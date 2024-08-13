@@ -11,6 +11,14 @@ export const Green = '#007A3D'
 
 export const { width, height } = Dimensions.get('window');
 
+/**
+ * @typedef {import('../interfaces').StudyCard} StudyCard
+ */
+
+/**
+ * @param {{cardData: StudyCard, idx: number}} props
+ * @returns {React.ReactElement}
+ */
 function StudyCard(props) {
   const { cardData, idx } = props;
   if (!cardData) return <></>;

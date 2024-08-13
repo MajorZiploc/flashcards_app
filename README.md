@@ -1,12 +1,12 @@
 # TODO:
 
-add import desk ability
+add import deck ability
 
   Add a delimiter TextInput field that defaults to ' - '
 
   requires accessing the downloads folder or whatever folder the app can get access to
 
-add edit mode toggle in desk list view
+add edit mode toggle in deck list view
 
   add edit deck ability - goes to import but any cards that match the current terms will replace the old cards
 
