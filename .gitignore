@@ -69,3 +69,5 @@ jest_coverage
 
 Session.vim
 tags
+
+cscope.out
