@@ -20,6 +20,7 @@ export const { width, height } = Dimensions.get('window');
 function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
   /** @type {import('../interfaces').useState<StudyCard[]>} */
   const [studyCards, setStudyCards] = useState([]);
+  const [cardIndex, setCardIndex] = useState(0);
 
   useEffect(() => {
     setStudyCards((cards ?? []).map(c => ({...c, front: isDefinitionFirst ? c.definition : c.term, back: isDefinitionFirst ? c.term : c.definition})));
@@ -29,6 +30,7 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
     <View>
       <Swiper
         cards={studyCards}
+        cardIndex={cardIndex}
         renderCard={(cardData, idx) => <StudyCard cardData={cardData} idx={idx} />}
         onSwipedLeft={index => {
           console.log('onSwipedLeft');
@@ -38,6 +40,7 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
           console.log('onSwipedRight');
           console.log(index);
         }}
+        goBackToPreviousCardOnSwipeRight={true}
         onSwipedAll={() => {
           console.log("all done!");
         }}
