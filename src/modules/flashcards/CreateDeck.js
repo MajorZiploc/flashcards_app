@@ -81,6 +81,7 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
         console.log(e);
         console.log('failed');
         setErrorMessage(e);
+        setSuccessfulUploadMessage(undefined);
       })
       .finally(() => console.log('submit completed'));
   }
