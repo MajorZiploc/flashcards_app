@@ -32,7 +32,7 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
         cards={studyCards}
         infinite={true}
         cardIndex={cardIndex}
-        renderCard={(cardData, idx) => <StudyCard cardData={cardData} idx={idx} />}
+        renderCard={(cardData, idx) => <StudyCard cardData={cardData} idx={idx} cardCount={studyCards.length} />}
         onSwipedLeft={index => {
           console.log('onSwipedLeft');
           console.log(index);

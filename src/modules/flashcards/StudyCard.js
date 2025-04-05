@@ -16,16 +16,16 @@ export const { width, height } = Dimensions.get('window');
  */
 
 /**
- * @param {{cardData: StudyCard, idx: number}} props
+ * @param {{cardData: StudyCard, idx: number, cardCount: number}} props
  * @returns {React.ReactElement}
  */
 function StudyCard(props) {
-  const { cardData, idx } = props;
+  const { cardData, idx, cardCount } = props;
   if (!cardData) return <></>;
   return (
     <ScrollView>
       <View style={styles.flipSide}>
-        <Text>{idx}</Text>
+        <Text>{idx} of {cardCount}</Text>
       </View>
       <FlipCard
         style={styles.flipCard}
