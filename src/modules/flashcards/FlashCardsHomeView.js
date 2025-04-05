@@ -38,7 +38,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
   console.log('decks');
   console.log(decks);
 
-  useEffect(() => {
+  const fetchDecks = () => {
     (async () => {
       try {
         const filePath = RNFS.DownloadDirectoryPath + "/autoTestCards.txt";
@@ -60,6 +60,10 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         console.error(error);
       }
     })();
+  }
+
+  useEffect(() => {
+    fetchDecks();
   }, []);
 
   // useEffect(() => {
@@ -174,6 +178,14 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             caption="Settings"
             onPress={() => {
               navigation.navigate('Settings');
+            }}
+          />
+          <Button
+            style={[styles.button]}
+            primary
+            caption="Refresh Decks"
+            onPress={() => {
+              fetchDecks();
             }}
           />
         </View>
