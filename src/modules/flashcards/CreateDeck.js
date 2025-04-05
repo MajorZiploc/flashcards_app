@@ -31,11 +31,16 @@ const folderMetadata = [
 
 export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) {
 
-  const [deckName, setDeckName] = useState('');
+  /** @type {import('../interfaces').useState<string | undefined>} */
+  const [deckName, setDeckName] = useState();
   const [selectedFolderIndex, setSelectedFolderIndex] = useState(0);
   const [selectedFileIndex, setSelectedFileIndex] = useState(-1);
   /** @type {import('../interfaces').useState<RNFS.ReadDirItem[]>} */
   const [fileChoices, setFileChoices] = useState([]);
+  /** @type {import('../interfaces').useState<string | undefined>} */
+  const [errorMessage, setErrorMessage] = useState();
+  /** @type {import('../interfaces').useState<string | undefined>} */
+  const [successfulUploadMessage, setSuccessfulUploadMessage] = useState();
 
   useEffect(() => {
     (async () => {
@@ -46,6 +51,40 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
     })();
   }, [selectedFolderIndex]);
 
+  const onPressSubmit = () => {
+    (async () => {
+      // TODO: if home page doesnt refresh then manage decks in redux and refresh the getDecks at the end of this for the home page
+      // TODO: add loading disable of form fields
+      if (!deckName) throw 'Must specify a deck name!';
+      if (selectedFileIndex == null || selectedFileIndex < 0) throw 'Must specify a file!';
+      const existingConflictingDecks = await getDecks(db, [deckName]);
+      if (existingConflictingDecks.length > 0) throw `Deck named: ${deckName} already exists`;
+      const db = await getDBConnection();
+      await saveDecks(db, [{name: deckName}]);
+      const deck = (await getDecks(db, [deckName]))[0];
+      const file = fileChoices[selectedFileIndex];
+      const content = await RNFS.readFile(file.path);
+      const cards = content.split("\n").filter(line => line.includes(' - ')).filter((l, idx) => idx < 4).map(line => {
+        const splitLine = line.split(' - ');
+        const term = splitLine[0];
+        const definition = splitLine.splice(1).join(' - ');
+        return {term, definition};
+      });
+      await saveCards(db, cards, deck);
+    })()
+      .then(() => {
+        console.log('successful')
+        setErrorMessage(undefined);
+        setSuccessfulUploadMessage(`successfully uploaded deck: ${deckName}!`);
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log('failed');
+        setErrorMessage(e);
+      })
+      .finally(() => console.log('submit completed'));
+  }
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -53,6 +92,16 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
         style={styles.bgImage}
         resizeMode="cover"
       >
+        {errorMessage && (
+          <View style={styles.errorSection}>
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          </View>
+        )}
+        {successfulUploadMessage && (
+          <View style={styles.successfulUploadSection}>
+            <Text style={styles.successfulUploadText}>{successfulUploadMessage}</Text>
+          </View>
+        )}
         <View style={styles.section}>
           <Dropdown
             placeholder="Select a folder..."
@@ -81,34 +130,10 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
           />
           <Button
             style={[styles.button]}
-            primary
+            disabled={false}
             caption="Submit"
             onPress={() => {
-              (async () => {
-                // TODO: if home page doesnt refresh then manage decks in redux and refresh the getDecks at the end of this for the home page
-                // TODO: add loading disable of form fields
-                // TODO: Add feedback of successful deck creation
-                // TODO: Add feedback of failed deck creation
-                // TODO: add validation to ensure no decks have the same name
-                const db = await getDBConnection();
-                await saveDecks(db, [{name: deckName}]);
-                const deck = (await getDecks(db, [deckName]))[0];
-                const file = fileChoices[selectedFileIndex];
-                const content = await RNFS.readFile(file.path);
-                const cards = content.split("\n").filter(line => line.includes(' - ')).filter((l, idx) => idx < 4).map(line => {
-                  const splitLine = line.split(' - ');
-                  const term = splitLine[0];
-                  const definition = splitLine.splice(1).join(' - ');
-                  return {term, definition};
-                });
-                await saveCards(db, cards, deck);
-              })()
-                .then(() => console.log('successful'))
-                .catch((e) => {
-                  console.log(e);
-                  console.log('failed');
-                })
-                .finally(() => console.log('submit completed'));
+              onPressSubmit();
             }}
           />
         </View>
@@ -124,6 +149,22 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     marginHorizontal: -20,
+  },
+  successfulUploadSection: {
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    backgroundColor: '#01b901',
+  },
+  successfulUploadText: {
+    color: '#000000',
+  },
+  errorSection: {
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    backgroundColor: '#a11212',
+  },
+  errorText: {
+    color: '#c7cfcc',
   },
   section: {
     flex: 1,
