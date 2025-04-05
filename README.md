@@ -1,5 +1,7 @@
 # TODO:
 
+Next step: download the app on android and test if MVP works
+
 add import deck ability
 
   Add a delimiter TextInput field that defaults to ' - '
