@@ -30,6 +30,7 @@ function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
     <View>
       <Swiper
         cards={studyCards}
+        infinite={true}
         cardIndex={cardIndex}
         renderCard={(cardData, idx) => <StudyCard cardData={cardData} idx={idx} />}
         onSwipedLeft={index => {
