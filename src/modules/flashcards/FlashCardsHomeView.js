@@ -41,20 +41,21 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
   const fetchDecks = () => {
     (async () => {
       try {
-        const filePath = RNFS.DownloadDirectoryPath + "/autoTestCards.txt";
-        const fileContent = basicCards.map(card => `${card.term} - ${card.definition}`).join("\n");
-        await RNFS.writeFile(filePath, fileContent, "utf8");
+        // const filePath = RNFS.DownloadDirectoryPath + "/autoTestCards.txt";
+        // const fileContent = basicCards.map(card => `${card.term} - ${card.definition}`).join("\n");
+        // await RNFS.writeFile(filePath, fileContent, "utf8");
         const db = await getDBConnection();
         // await dropDeckTable(db);
         // const initDecks = [{ name: 'Bio1' }, { name: 'CS1' }, { name: 'Math1' }];
-        // await createDeckTable(db);
+        await createDeckTable(db);
+        await createCardTable(db);
         const storedDecks = await getDecks(db);
         if (storedDecks.length) {
           setDecks(storedDecks);
         } else {
-          await saveDecks(db, initDecks);
-          const storedDecks = await getDecks(db);
-          setDecks(storedDecks);
+          // await saveDecks(db, initDecks);
+          // const storedDecks = await getDecks(db);
+          // setDecks(storedDecks);
         }
       } catch (error) {
         console.error(error);
