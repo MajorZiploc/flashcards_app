@@ -30,15 +30,16 @@ const cardSets = cardSetNames.map(cn => ({
   name: cn,
 }))
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync }) {
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync, decks, setDecks, }) {
   const [query, setQuery] = useState('');
-  /** @type {import('../interfaces').useState<DBDeck[]>} */
-  const [decks, setDecks] = useState([]);
 
   console.log('decks');
   console.log(decks);
+  console.log('setDecks');
+  console.log(setDecks);
 
   useEffect(() => {
+    if (!setDecks) return;
     (async () => {
       try {
         const filePath = RNFS.DownloadDirectoryPath + "/autoTestCards.txt";
@@ -60,29 +61,29 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         console.error(error);
       }
     })();
-  }, []);
+  }, [setDecks]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!decks) return;
-  //     try {
-  //       const db = await getDBConnection();
-  //       await dropCardTable(db);
-  //       const initCards = basicCards;
-  //       await createCardTable(db);
-  //       for (const deck of decks) {
-  //         await saveCards(db, initCards, deck);
-  //       }
-  //       for (const deck of decks) {
-  //         const dbCards = await getCards(db, deck.id);
-  //         console.log('dbCards');
-  //         console.log(dbCards);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   })();
-  // }, [decks]);
+  useEffect(() => {
+    (async () => {
+      if (!decks) return;
+      try {
+        const db = await getDBConnection();
+        await dropCardTable(db);
+        const initCards = basicCards;
+        await createCardTable(db);
+        for (const deck of decks) {
+          await saveCards(db, initCards, deck);
+        }
+        for (const deck of decks) {
+          const dbCards = await getCards(db, deck.id);
+          console.log('dbCards');
+          console.log(dbCards);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [decks]);
 
   const renderCardNameItem = ({item}) => {
     return (
@@ -115,7 +116,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             style={styles.deckActionButton}
             onPress={() => {
               (async () => {
-                const selectedDeck = decks.find(deck => deck.name === item);
+                const selectedDeck = (decks ?? []).find(deck => deck.name === item);
                 if (selectedDeck) {
                   const db = await getDBConnection();
                   const cards = await getCards(db, selectedDeck.id);
