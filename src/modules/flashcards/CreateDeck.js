@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
+    backgroundColor: '#c7cfcc',
   },
   button: {
     marginTop: 8,
