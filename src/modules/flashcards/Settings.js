@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
+    backgroundColor: '#c7cfcc',
   },
   radioFirst: {
     height: 50,
