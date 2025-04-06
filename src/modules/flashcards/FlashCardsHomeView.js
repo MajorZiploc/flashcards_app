@@ -108,14 +108,14 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           >
             <Icon name="trash" size={25} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.deckActionButton}
-            onPress={() => {
-              // Stub for edit logic
-            }}
-          >
-            <Icon name="edit" size={25} color="black" />
-          </TouchableOpacity>
+          {/* <TouchableOpacity */}
+          {/*   style={styles.deckActionButton} */}
+          {/*   onPress={() => { */}
+          {/*     // Stub for edit logic */}
+          {/*   }} */}
+          {/* > */}
+          {/*   <Icon name="edit" size={25} color="black" /> */}
+          {/* </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.deckActionButton}
             onPress={() => {
