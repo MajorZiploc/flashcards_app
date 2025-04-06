@@ -10,7 +10,7 @@ import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
-import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
+import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks, deleteDecks} from './SqliteData';
 import RNFS from 'react-native-fs';
 
 /**
@@ -50,13 +50,14 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         await createDeckTable(db);
         await createCardTable(db);
         const storedDecks = await getDecks(db);
-        if (storedDecks.length) {
-          setDecks(storedDecks);
-        } else {
-          // await saveDecks(db, initDecks);
-          // const storedDecks = await getDecks(db);
-          // setDecks(storedDecks);
-        }
+        setDecks(storedDecks);
+        // if (storedDecks.length) {
+        //   setDecks(storedDecks);
+        // } else {
+        //   // await saveDecks(db, initDecks);
+        //   // const storedDecks = await getDecks(db);
+        //   // setDecks(storedDecks);
+        // }
       } catch (error) {
         console.error(error);
       }
@@ -103,7 +104,16 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <TouchableOpacity
             style={styles.deckActionButton}
             onPress={() => {
-              // Stub for delete logic
+              (async () => {
+                const selectedDeck = decks.find(deck => deck.name === item);
+                if (selectedDeck) {
+                console.log('selectedDeck');
+                console.log(selectedDeck);
+                  const db = await getDBConnection();
+                  await deleteDecks(db, [selectedDeck.id]);
+                  fetchDecks();
+                }
+              })();
             }}
           >
             <Icon name="trash" size={25} color="black" />
