@@ -35,6 +35,8 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
   const [deckName, setDeckName] = useState();
   const [selectedFolderIndex, setSelectedFolderIndex] = useState(0);
   const [selectedFileIndex, setSelectedFileIndex] = useState(-1);
+  /** @type {import('../interfaces').useState<number>} */
+  const [updateCount, setUpdateCount] = useState(1);
   /** @type {import('../interfaces').useState<RNFS.ReadDirItem[]>} */
   const [fileChoices, setFileChoices] = useState([]);
   /** @type {import('../interfaces').useState<string | undefined>} */
@@ -105,22 +107,28 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
         )}
         <View style={styles.section}>
           <Dropdown
+            key={updateCount}
             placeholder="Select a folder..."
             selectedIndex={selectedFolderIndex}
             items={folderMetadata.map(f => f.label)}
             onSelect={(idx) => {
+              if (idx < 0) return;
               setSelectedFolderIndex(idx);
               setDeckName('');
               setSelectedFileIndex(-1);
+              setUpdateCount(uc => uc + 1);
             }}
           />
           <Dropdown
+            key={updateCount * -1}
             placeholder="Select a file..."
             selectedIndex={selectedFileIndex}
             items={fileChoices.map(f => f.name)}
             onSelect={(idx) => {
+              if (idx < 0) return;
               setSelectedFileIndex(idx);
               setDeckName(fileChoices[idx].name);
+              setUpdateCount(uc => uc + 1);
             }}
           />
           <TextInput
