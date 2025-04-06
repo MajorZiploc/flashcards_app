@@ -59,9 +59,9 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
       // TODO: add loading disable of form fields
       if (!deckName) throw 'Must specify a deck name!';
       if (selectedFileIndex == null || selectedFileIndex < 0) throw 'Must specify a file!';
+      const db = await getDBConnection();
       const existingConflictingDecks = await getDecks(db, [deckName]);
       if (existingConflictingDecks.length > 0) throw `Deck named: ${deckName} already exists`;
-      const db = await getDBConnection();
       await saveDecks(db, [{name: deckName}]);
       const deck = (await getDecks(db, [deckName]))[0];
       const file = fileChoices[selectedFileIndex];
