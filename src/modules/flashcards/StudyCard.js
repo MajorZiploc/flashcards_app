@@ -25,7 +25,7 @@ function StudyCard(props) {
   return (
     <ScrollView>
       <View>
-        <Text style={styles.cardStats}>{idx} of {cardCount}</Text>
+        <Text style={styles.cardStats}>{idx + 1} of {cardCount}</Text>
       </View>
       <FlipCard
         style={styles.flipCard}
