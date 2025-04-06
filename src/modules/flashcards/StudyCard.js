@@ -24,8 +24,8 @@ function StudyCard(props) {
   if (!cardData) return <></>;
   return (
     <ScrollView>
-      <View style={styles.flipSide}>
-        <Text>{idx} of {cardCount}</Text>
+      <View>
+        <Text style={styles.cardStats}>{idx} of {cardCount}</Text>
       </View>
       <FlipCard
         style={styles.flipCard}
@@ -76,6 +76,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: width - 40,
     color: Green,
+  },
+  cardStats: {
+    color: '#000000',
   },
 });
 
