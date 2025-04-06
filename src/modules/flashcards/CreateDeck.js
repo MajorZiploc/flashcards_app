@@ -16,6 +16,10 @@ import {getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 
 const folderMetadata = [
   {
+    label: 'External Directory (App dir)',
+    value: RNFS.ExternalDirectoryPath,
+  },
+  {
     label: 'Downloads',
     value: RNFS.DownloadDirectoryPath,
   },
