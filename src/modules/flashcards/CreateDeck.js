@@ -14,50 +14,16 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 import { pick, keepLocalCopy, types } from '@react-native-documents/picker';
 
-const folderMetadata = [
-  {
-    label: 'External Directory (App dir)',
-    value: RNFS.ExternalDirectoryPath,
-  },
-  {
-    label: 'Downloads',
-    value: RNFS.DownloadDirectoryPath,
-  },
-  {
-    label: 'Documents',
-    value: RNFS.DocumentDirectoryPath,
-  },
-  {
-    label: 'External Storage',
-    value: RNFS.ExternalStorageDirectoryPath,
-  },
-];
-
-export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) {
+export default function CreateDeck() {
 
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [deckName, setDeckName] = useState();
-  const [selectedFolderIndex, setSelectedFolderIndex] = useState(0);
-  const [selectedFileIndex, setSelectedFileIndex] = useState(-1);
-  /** @type {import('../interfaces').useState<number>} */
-  const [updateCount, setUpdateCount] = useState(1);
-  /** @type {import('../interfaces').useState<RNFS.ReadDirItem[]>} */
-  const [fileChoices, setFileChoices] = useState([]);
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [errorMessage, setErrorMessage] = useState();
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [successfulUploadMessage, setSuccessfulUploadMessage] = useState();
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [fileContent, setFileContent] = useState();
-
-  useEffect(() => {
-    (async () => {
-      const path = folderMetadata[selectedFolderIndex].value;
-      // TODO: consider making this recursive on sub dirs instead of just top level files
-      const files = (await RNFS.readDir(path)).filter(f => f.isFile());
-      setFileChoices(files);
-    })();
-  }, [selectedFolderIndex]);
 
   const onSelectFile = () => {
     (async () => {
@@ -101,15 +67,12 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
       // TODO: add loading disable of form fields
       if (!deckName) throw 'Must specify a deck name!';
       if (!fileContent) throw 'no file was selected because no file content was found';
-      if (selectedFileIndex == null || selectedFileIndex < 0) throw 'Must specify a file!';
       const db = await getDBConnection();
       const existingConflictingDecks = await getDecks(db, [deckName]);
       if (existingConflictingDecks.length > 0) throw `Deck named: ${deckName} already exists`;
       await saveDecks(db, [{name: deckName}]);
       const deck = (await getDecks(db, [deckName]))[0];
-      const file = fileChoices[selectedFileIndex];
-      const content = await RNFS.readFile(file.path);
-      const cards = content.split("\n").filter(line => line.includes(' - ')).filter((l, idx) => idx < 4).map(line => {
+      const cards = fileContent.split("\n").filter(line => line.includes(' - ')).filter((l, idx) => idx < 4).map(line => {
         const splitLine = line.split(' - ');
         const term = splitLine[0];
         const definition = splitLine.splice(1).join(' - ');
@@ -155,31 +118,6 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
             caption="Pick File"
             onPress={() => {
               onSelectFile();
-            }}
-          />
-          <Dropdown
-            key={updateCount}
-            placeholder="Select a folder..."
-            selectedIndex={selectedFolderIndex}
-            items={folderMetadata.map(f => f.label)}
-            onSelect={(idx) => {
-              if (idx < 0) return;
-              setSelectedFolderIndex(idx);
-              setDeckName('');
-              setSelectedFileIndex(-1);
-              setUpdateCount(uc => uc + 1);
-            }}
-          />
-          <Dropdown
-            key={updateCount * -1}
-            placeholder="Select a file..."
-            selectedIndex={selectedFileIndex}
-            items={fileChoices.map(f => f.name)}
-            onSelect={(idx) => {
-              if (idx < 0) return;
-              setSelectedFileIndex(idx);
-              setDeckName(fileChoices[idx].name);
-              setUpdateCount(uc => uc + 1);
             }}
           />
           <TextInput
@@ -238,5 +176,6 @@ const styles = StyleSheet.create({
   },
   deckNameInput: {
     backgroundColor: "#FFFFFF",
+    color: '#000000',
   },
 });
