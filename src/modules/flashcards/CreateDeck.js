@@ -7,12 +7,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import RNFS from 'react-native-fs';
-
 import { Text } from '../../components/StyledText';
 import { Button, Dropdown, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 import {getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
+import { pick, keepLocalCopy, types } from '@react-native-documents/picker';
 
 const folderMetadata = [
   {
@@ -47,6 +47,8 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
   const [errorMessage, setErrorMessage] = useState();
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [successfulUploadMessage, setSuccessfulUploadMessage] = useState();
+  /** @type {import('../interfaces').useState<string | undefined>} */
+  const [fileContent, setFileContent] = useState();
 
   useEffect(() => {
     (async () => {
@@ -57,11 +59,48 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
     })();
   }, [selectedFolderIndex]);
 
+  const onSelectFile = () => {
+    (async () => {
+      const [{name, uri}] = await pick({ mode: 'import', allowMultiSelection: false, type: [types.plainText] });
+      console.log('name, uri');
+      console.log(name, uri);
+      if (!name) throw "invalid file - file has no name";
+      // TODO: this creates a copy in the apps storage - would be nice to delete this copy after getting the file content
+      const [docContent] = await keepLocalCopy({
+        files: [
+          {
+            uri,
+            fileName: name,
+          },
+        ],
+        destination: 'documentDirectory',
+      })
+      console.log('docContent');
+      console.log(docContent);
+      if (docContent.status === 'success') {
+        const fileSize = await RNFS.stat(docContent.localUri).then(stat => stat.size);
+        if (fileSize > 5 * 1024 * 1024) throw 'File size exceeds 5MB limit';
+        const _fileContent = await RNFS.readFile(docContent.localUri);
+        console.log(_fileContent)
+        // TODO: consider storing the localUri instead of whole fileContent here - then read file (hopefully as a stream) in the submit action when creating the deck
+        setFileContent(_fileContent);
+        setDeckName(name);
+      }
+    })().catch((err) => {
+      if (err.toString().includes('user canceled')) {
+        // User cancelled the picker
+      } else {
+        setErrorMessage('Error uploading file:', err);
+      }
+    });
+  }
+
   const onPressSubmit = () => {
     (async () => {
       // TODO: if home page doesnt refresh then manage decks in redux and refresh the getDecks at the end of this for the home page
       // TODO: add loading disable of form fields
       if (!deckName) throw 'Must specify a deck name!';
+      if (!fileContent) throw 'no file was selected because no file content was found';
       if (selectedFileIndex == null || selectedFileIndex < 0) throw 'Must specify a file!';
       const db = await getDBConnection();
       const existingConflictingDecks = await getDecks(db, [deckName]);
@@ -110,6 +149,14 @@ export default function CreateDeck({ isDefinitionFirst, isDefinitionFirstSet }) 
           </View>
         )}
         <View style={styles.section}>
+          <Button
+            style={[styles.button]}
+            disabled={false}
+            caption="Pick File"
+            onPress={() => {
+              onSelectFile();
+            }}
+          />
           <Dropdown
             key={updateCount}
             placeholder="Select a folder..."
