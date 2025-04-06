@@ -26,8 +26,11 @@ import { PermissionsAndroid } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import { Platform } from 'react-native';
 
-const folderName = 'com.flashcards';
 const folderMetadata = [
+  {
+    label: 'External Directory (App dir)',
+    value: RNFS.ExternalDirectoryPath,
+  },
   {
     label: 'Downloads',
     value: RNFS.DownloadDirectoryPath,
@@ -39,10 +42,6 @@ const folderMetadata = [
   {
     label: 'External Storage',
     value: RNFS.ExternalStorageDirectoryPath,
-  },
-  {
-    label: 'External Directory (App dir)',
-    value: RNFS.ExternalDirectoryPath + '/' + folderName,
   },
 ];
 
