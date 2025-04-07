@@ -8,6 +8,7 @@ export default compose(
     state => ({
       cards: state.flashcards.cards,
       isDefinitionFirst: state.flashcards.isDefinitionFirst,
+      isShuffled: state.flashcards.isShuffled,
     }),
   ),
   withState('isExtended', 'setIsExtended', false))(
