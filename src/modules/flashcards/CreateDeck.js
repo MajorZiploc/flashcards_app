@@ -115,8 +115,9 @@ export default function CreateDeck() {
         resizeMode="cover"
       >
         <View style={styles.section}>
+          <Text>Term to Definition Delimiter (Separator)</Text>
           <TextInput
-            placeholder='Term to Definition Delimiter (Separator) (Default: " - ")'
+            placeholder='(Default: " - ")'
             style={styles.deckNameInput}
             value={cardDelimiter}
             onChangeText={setCardDelimiter}
