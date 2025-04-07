@@ -17,14 +17,16 @@ export const { width, height } = Dimensions.get('window');
  * @typedef {import('../interfaces').StudyCard} StudyCard
  */
 
-function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst }) {
+function StudySession({ loadCards, loadCardsAsync, cards, isDefinitionFirst, isShuffled }) {
   /** @type {import('../interfaces').useState<StudyCard[]>} */
   const [studyCards, setStudyCards] = useState([]);
   const [cardIndex, setCardIndex] = useState(0);
 
   useEffect(() => {
-    setStudyCards((cards ?? []).map(c => ({...c, front: isDefinitionFirst ? c.definition : c.term, back: isDefinitionFirst ? c.term : c.definition})));
-  }, [cards, isDefinitionFirst]);
+    let newCards = (cards ?? []).map(c => ({...c, front: isDefinitionFirst ? c.definition : c.term, back: isDefinitionFirst ? c.term : c.definition}));
+    newCards = isShuffled ? newCards.sort(() => Math.random() - 0.5) : newCards;
+    setStudyCards(newCards);
+  }, [cards, isDefinitionFirst, isShuffled]);
 
   return (
     <View>

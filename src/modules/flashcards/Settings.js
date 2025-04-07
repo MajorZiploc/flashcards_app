@@ -13,13 +13,19 @@ import { Button, Dropdown, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export default function Settings({ isDefinitionFirst, isDefinitionFirstSet }) {
+export default function Settings({ isDefinitionFirst, isDefinitionFirstSet, isShuffled, isShuffledSet }) {
 
   const [selectedFirstIndex, setSelectedFirstIndex] = useState(isDefinitionFirst ? 1 : 0);
+  const [selectedIsShuffled, setSelectedIsShuffled] = useState(isShuffled ? 1 : 0);
 
   const setIsDefinitionFirst = (index) => {
     setSelectedFirstIndex(index);
     isDefinitionFirstSet(index === 1);
+  };
+
+  const setIsShuffled = (index) => {
+    setSelectedIsShuffled(index);
+    isShuffledSet(index === 1);
   };
 
   return (
@@ -35,6 +41,13 @@ export default function Settings({ isDefinitionFirst, isDefinitionFirstSet }) {
               selectedIndex={selectedFirstIndex}
               items={['term', 'definition']}
               onChange={setIsDefinitionFirst}
+            />
+          </View>
+          <View style={[styles.radioFirst]}>
+            <RadioGroup
+              selectedIndex={selectedIsShuffled}
+              items={['in order', 'shuffled']}
+              onChange={setIsShuffled}
             />
           </View>
         </View>
@@ -60,5 +73,6 @@ const styles = StyleSheet.create({
   radioFirst: {
     height: 50,
     width: 150,
+    marginBottom: 10,
   },
 });
