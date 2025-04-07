@@ -13,6 +13,7 @@ import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-ha
 import Icon from 'react-native-vector-icons/Entypo';
 import {getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 import { pick, keepLocalCopy, types } from '@react-native-documents/picker';
+import OurModal from './OurModal';
 
 const defaultCardDelimiter = ' - ';
 
@@ -28,6 +29,8 @@ export default function CreateDeck() {
   const [fileContent, setFileContent] = useState();
   /** @type {import('../interfaces').useState<string>} */
   const [cardDelimiter, setCardDelimiter] = useState(defaultCardDelimiter);
+  /** @type {import('../interfaces').useState<boolean>} */
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onSelectFile = () => {
     (async () => {
@@ -101,21 +104,16 @@ export default function CreateDeck() {
 
   return (
     <View style={styles.container}>
+      {errorMessage ? (
+        <OurModal modalVisible={modalVisible} setModalVisible={setModalVisible} message={errorMessage} subMessage={successfulUploadMessage} style={styles.errorModal} />
+      ) : successfulUploadMessage ? (
+        <OurModal modalVisible={modalVisible} setModalVisible={setModalVisible} message={successfulUploadMessage} style={styles.infoModal} />
+      ) : <></>}
       <ImageBackground
         source={require('../../../assets/images/background.png')}
         style={styles.bgImage}
         resizeMode="cover"
       >
-        {errorMessage && (
-          <View style={styles.errorSection}>
-            <Text style={styles.errorText}>{errorMessage}</Text>
-          </View>
-        )}
-        {successfulUploadMessage && (
-          <View style={styles.successfulUploadSection}>
-            <Text style={styles.successfulUploadText}>{successfulUploadMessage}</Text>
-          </View>
-        )}
         <View style={styles.section}>
           <TextInput
             placeholder='Term to Definition Delimiter (Separator) (Default: " - ")'
@@ -188,5 +186,11 @@ const styles = StyleSheet.create({
   deckNameInput: {
     backgroundColor: "#FFFFFF",
     color: '#000000',
+  },
+  errorModal: {
+    backgroundColor: '#efa3a9',
+  },
+  infoModal: {
+    backgroundColor: 'white',
   },
 });
