@@ -14,6 +14,8 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 import { pick, keepLocalCopy, types } from '@react-native-documents/picker';
 
+const defaultCardDelimiter = ' - ';
+
 export default function CreateDeck() {
 
   /** @type {import('../interfaces').useState<string | undefined>} */
@@ -24,6 +26,8 @@ export default function CreateDeck() {
   const [successfulUploadMessage, setSuccessfulUploadMessage] = useState();
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [fileContent, setFileContent] = useState();
+  /** @type {import('../interfaces').useState<string>} */
+  const [cardDelimiter, setCardDelimiter] = useState(defaultCardDelimiter);
 
   const onSelectFile = () => {
     (async () => {
@@ -67,15 +71,16 @@ export default function CreateDeck() {
       // TODO: add loading disable of form fields
       if (!deckName) throw 'Must specify a deck name!';
       if (!fileContent) throw 'no file was selected because no file content was found';
+      const _cardDelimiter = cardDelimiter || defaultCardDelimiter;
       const db = await getDBConnection();
       const existingConflictingDecks = await getDecks(db, [deckName]);
       if (existingConflictingDecks.length > 0) throw `Deck named: ${deckName} already exists`;
       await saveDecks(db, [{name: deckName}]);
       const deck = (await getDecks(db, [deckName]))[0];
-      const cards = fileContent.split("\n").filter(line => line.includes(' - ')).filter((l, idx) => idx < 4).map(line => {
-        const splitLine = line.split(' - ');
+      const cards = fileContent.split("\n").filter(line => line.includes(_cardDelimiter)).filter((l, idx) => idx < 4).map(line => {
+        const splitLine = line.split(_cardDelimiter);
         const term = splitLine[0];
-        const definition = splitLine.splice(1).join(' - ');
+        const definition = splitLine.splice(1).join(_cardDelimiter);
         return {term, definition};
       });
       await saveCards(db, cards, deck);
@@ -112,6 +117,12 @@ export default function CreateDeck() {
           </View>
         )}
         <View style={styles.section}>
+          <TextInput
+            placeholder='Term to Definition Delimiter (Separator) (Default: " - ")'
+            style={styles.deckNameInput}
+            value={cardDelimiter}
+            onChangeText={setCardDelimiter}
+          />
           <Button
             style={[styles.button]}
             disabled={false}
