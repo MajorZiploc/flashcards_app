@@ -1,18 +1,12 @@
 # TODO:
 
-Next step: download the app on android and test if MVP works
-
 add import deck ability
 
   Add a delimiter TextInput field that defaults to ' - '
 
-  requires accessing the downloads folder or whatever folder the app can get access to
-
 add edit mode toggle in deck list view
 
   add edit deck ability - goes to import but any cards that match the current terms will replace the old cards
-
-  add delete deck
 
 add edit mode for cards in study session mode
 
@@ -20,9 +14,7 @@ add edit mode for cards in study session mode
 
 add a light/dark mode toggle to the settings
 
-add sqlite storage for app settings and decks
-
-add ability to create new deck within the app itself
+add sqlite storage for app settings
 
 # Check if you have all dependencies
 
