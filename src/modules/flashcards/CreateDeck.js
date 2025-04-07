@@ -27,8 +27,8 @@ export default function CreateDeck() {
   const [successfulUploadMessage, setSuccessfulUploadMessage] = useState();
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [fileContent, setFileContent] = useState();
-  /** @type {import('../interfaces').useState<string>} */
-  const [cardDelimiter, setCardDelimiter] = useState(defaultCardDelimiter);
+  /** @type {import('../interfaces').useState<string | undefined>} */
+  const [cardDelimiter, setCardDelimiter] = useState();
   /** @type {import('../interfaces').useState<boolean>} */
   const [modalVisible, setModalVisible] = useState(false);
 
