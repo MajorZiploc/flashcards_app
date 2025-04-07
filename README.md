@@ -1,9 +1,5 @@
 # TODO:
 
-add import deck ability
-
-  Add a delimiter TextInput field that defaults to ' - '
-
 add edit mode toggle in deck list view
 
   add edit deck ability - goes to import but any cards that match the current terms will replace the old cards
