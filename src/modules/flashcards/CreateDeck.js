@@ -115,29 +115,36 @@ export default function CreateDeck() {
         resizeMode="cover"
       >
         <View style={styles.section}>
-          <Text>Term to Definition Delimiter (Separator)</Text>
-          <TextInput
-            placeholder='(Default: " - ")'
-            style={styles.deckNameInput}
-            value={cardDelimiter}
-            onChangeText={setCardDelimiter}
-          />
+          <View style={styles.fieldSection}>
+            <Text style={styles.labelHeader}>Term to Definition Delimiter (Separator)</Text>
+            <TextInput
+              placeholder='(Default: " - ")'
+              style={styles.deckNameInput}
+              value={cardDelimiter}
+              onChangeText={setCardDelimiter}
+            />
+          </View>
+          <View style={styles.fieldSection}>
+            <Button
+              style={[styles.button]}
+              disabled={false}
+              caption="Pick File"
+              onPress={() => {
+                onSelectFile();
+              }}
+            />
+          </View>
+          <View style={styles.fieldSection}>
+            <Text style={styles.labelHeader}>Deck Name</Text>
+            <TextInput
+              placeholder=''
+              style={styles.deckNameInput}
+              value={deckName}
+              onChangeText={setDeckName}
+            />
+          </View>
           <Button
-            style={[styles.button]}
-            disabled={false}
-            caption="Pick File"
-            onPress={() => {
-              onSelectFile();
-            }}
-          />
-          <TextInput
-            placeholder='Deck Name'
-            style={styles.deckNameInput}
-            value={deckName}
-            onChangeText={setDeckName}
-          />
-          <Button
-            style={[styles.button]}
+            style={[styles.button, {marginTop: 50}]}
             disabled={false}
             caption="Submit"
             onPress={() => {
@@ -193,5 +200,14 @@ const styles = StyleSheet.create({
   },
   infoModal: {
     backgroundColor: 'white',
+  },
+  labelHeader: {
+    fontSize: 18,
+  },
+  fieldSection: {
+    marginLeft: 14,
+    marginRight: 14,
+    marginTop: 0,
+    marginBottom: 10,
   },
 });
