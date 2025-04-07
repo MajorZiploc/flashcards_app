@@ -1,5 +1,6 @@
 const CARDS_LOADED = 'FlashCardsState/CARDS_LOADED';
 const SET_IS_DEFINITION_FIRST = 'FlashCardsState/SET_IS_DEFINITION_FIRST';
+const SET_IS_SHUFFLED = 'FlashCardsState/SET_IS_SHUFFLED';
 
 export function cardsLoaded(cards) {
   return {
@@ -15,6 +16,13 @@ export function setIsDefinitionFirst(isDefinitionFirst) {
   };
 }
 
+export function setIsShuffled(isShuffled) {
+  return {
+    type: SET_IS_SHUFFLED,
+    isShuffled,
+  };
+}
+
 export function loadCards(cards) {
   // Do cards loading here
   return (dispatch, getState) => {
@@ -25,6 +33,12 @@ export function loadCards(cards) {
 export function isDefinitionFirstSet(isDefinitionFirst) {
   return (dispatch, getState) => {
     dispatch(setIsDefinitionFirst(isDefinitionFirst));
+  };
+}
+
+export function isShuffledSet(isShuffled) {
+  return (dispatch, getState) => {
+    dispatch(setIsShuffled(isShuffled));
   };
 }
 
@@ -42,6 +56,7 @@ const defaultState = {
   cards: [],
   isLoading: false,
   isDefinitionFirst: false,
+  isShuffled: false,
 };
 
 export default function FlashcardsStateReducer(state = defaultState, action) {
@@ -54,6 +69,10 @@ export default function FlashcardsStateReducer(state = defaultState, action) {
     case SET_IS_DEFINITION_FIRST:
       return Object.assign({}, state, {
         isDefinitionFirst: action.isDefinitionFirst,
+      });
+    case SET_IS_SHUFFLED:
+      return Object.assign({}, state, {
+        isShuffled: action.isShuffled,
       });
     default:
       return state;
