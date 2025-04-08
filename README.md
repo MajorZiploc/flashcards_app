@@ -6,6 +6,8 @@ add app icon
 
 address warnings and errors in console from various actions - also shown as popup at bottom of the app
 
+cleanup git history
+
 ## Rest
 
 add edit mode toggle in deck list view
