@@ -4,8 +4,6 @@
 
 add app icon
 
-address warnings and errors in console from various actions - also shown as popup at bottom of the app
-
 cleanup git history
 
 ## Rest
@@ -21,6 +19,10 @@ add edit mode for cards in study session mode
 add a light/dark mode toggle to the settings
 
 add sqlite storage for app settings
+
+address warnings and errors in console from various actions - also shown as popup at bottom of the app
+
+  its all in my dependencies - updating dependencies may fix it, but thats a large effort
 
 # Check if you have all dependencies
 
