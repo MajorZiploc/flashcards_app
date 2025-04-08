@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
   fieldInput: {
     backgroundColor: "#FFFFFF",
     color: '#000000',
-    placeholderTextColor: '#000000',
   },
   errorModal: {
     backgroundColor: '#efa3a9',
