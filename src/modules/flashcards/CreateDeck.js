@@ -89,6 +89,8 @@ export default function CreateDeck() {
         setErrorMessage(undefined);
         setSuccessfulUploadMessage(`successfully uploaded deck: ${deckName}!`);
         setModalVisibleSubmitInfo(true);
+        setFileContent(undefined);
+        setDeckName(undefined);
       })
       .catch((e) => {
         setErrorMessage(e);
