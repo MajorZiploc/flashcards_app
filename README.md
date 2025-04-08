@@ -2,7 +2,11 @@
 
 ## MVP
 
-Deck List Page: Remove need for 'Refresh Decks' button
+Deck List Page:
+
+ Remove need for 'Refresh Decks' button
+
+ Add verification modal for delete action (Are you sure?)
 
 Create Deck Page: Add blurb about what kind of plain text files we expect
 
