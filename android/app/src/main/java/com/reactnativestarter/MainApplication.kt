@@ -1,4 +1,4 @@
-package com.reactnativestarter
+package com.flashcardslink
 
 import android.app.Application
 import com.facebook.react.PackageList
