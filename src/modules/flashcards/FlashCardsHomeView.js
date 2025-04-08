@@ -5,13 +5,13 @@ import {
   ImageBackground,
   FlatList,
 } from 'react-native';
-
 import { Text } from '../../components/StyledText';
 import { Button, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks, deleteDecks} from './SqliteData';
 import RNFS from 'react-native-fs';
+import OurModal from './OurModal';
 
 /**
  * @typedef {import('../interfaces').DBCard} DBCard
@@ -34,9 +34,8 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
   const [query, setQuery] = useState('');
   /** @type {import('../interfaces').useState<DBDeck[]>} */
   const [decks, setDecks] = useState([]);
-
-  console.log('decks');
-  console.log(decks);
+  /** @type {import('../interfaces').useState<boolean>} */
+  const [modalVisibleDelete, setModalVisibleDelete] = useState(false);
 
   const fetchDecks = () => {
     (async () => {
@@ -90,9 +89,23 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
   //   })();
   // }, [decks]);
 
+  const onSubmitDelete = (item) => () => {
+    (async () => {
+      const selectedDeck = decks.find(deck => deck.name === item);
+      if (selectedDeck) {
+        const db = await getDBConnection();
+        await deleteDecks(db, [selectedDeck.id]);
+        fetchDecks();
+      }
+    })().finally(() => {
+      setModalVisibleDelete(false);
+    });
+  };
+
   const renderCardNameItem = ({item}) => {
     return (
       <View style={styles.cardContainer}>
+        <OurModal modalVisible={modalVisibleDelete} setModalVisible={setModalVisibleDelete} message={'Delete Deck'} subMessage={'Are you sure?'} onSubmit={onSubmitDelete(item)} closeText={'Cancel'} submitText={'Delete'} />
         <TouchableOpacity
           style={styles.cardButton}
         >
@@ -104,16 +117,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <TouchableOpacity
             style={styles.deckActionButton}
             onPress={() => {
-              (async () => {
-                const selectedDeck = decks.find(deck => deck.name === item);
-                if (selectedDeck) {
-                console.log('selectedDeck');
-                console.log(selectedDeck);
-                  const db = await getDBConnection();
-                  await deleteDecks(db, [selectedDeck.id]);
-                  fetchDecks();
-                }
-              })();
+              setModalVisibleDelete(true);
             }}
           >
             <Icon name="trash" size={25} color="black" />

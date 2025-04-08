@@ -10,7 +10,7 @@ import RNFS from 'react-native-fs';
 import { Text } from '../../components/StyledText';
 import { Button, Dropdown, RadioGroup } from '../../components';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/AntDesign';
 import {getDBConnection, getDecks, saveCards, saveDecks} from './SqliteData';
 import { pick, keepLocalCopy, types } from '@react-native-documents/picker';
 import OurModal from './OurModal';
@@ -30,13 +30,13 @@ export default function CreateDeck() {
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [cardDelimiter, setCardDelimiter] = useState();
   /** @type {import('../interfaces').useState<boolean>} */
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleSubmitInfo, setModalVisibleSubmitInfo] = useState(false);
+  /** @type {import('../interfaces').useState<boolean>} */
+  const [modalVisibleQuestionInfo, setModalVisibleQuestionInfo] = useState(false);
 
   const onSelectFile = () => {
     (async () => {
       const [{name, uri}] = await pick({ mode: 'import', allowMultiSelection: false, type: [types.plainText] });
-      console.log('name, uri');
-      console.log(name, uri);
       if (!name) throw "invalid file - file has no name";
       // TODO: this creates a copy in the apps storage - would be nice to delete this copy after getting the file content
       const [docContent] = await keepLocalCopy({
@@ -48,13 +48,10 @@ export default function CreateDeck() {
         ],
         destination: 'documentDirectory',
       })
-      console.log('docContent');
-      console.log(docContent);
       if (docContent.status === 'success') {
         const fileSize = await RNFS.stat(docContent.localUri).then(stat => stat.size);
         if (fileSize > 5 * 1024 * 1024) throw 'File size exceeds 5MB limit';
         const _fileContent = await RNFS.readFile(docContent.localUri);
-        console.log(_fileContent)
         // TODO: consider storing the localUri instead of whole fileContent here - then read file (hopefully as a stream) in the submit action when creating the deck
         setFileContent(_fileContent);
         setDeckName(name);
@@ -89,25 +86,51 @@ export default function CreateDeck() {
       await saveCards(db, cards, deck);
     })()
       .then(() => {
-        console.log('successful')
         setErrorMessage(undefined);
         setSuccessfulUploadMessage(`successfully uploaded deck: ${deckName}!`);
+        setModalVisibleSubmitInfo(true);
       })
       .catch((e) => {
-        console.log(e);
-        console.log('failed');
         setErrorMessage(e);
         setSuccessfulUploadMessage(undefined);
-      })
-      .finally(() => console.log('submit completed'));
+        setModalVisibleSubmitInfo(true);
+      }).finally(() => {
+        setModalVisibleSubmitInfo(true);
+      });
   }
+
+  const onPressQuestion = () => {
+    setModalVisibleQuestionInfo(true);
+  };
+
+  const messageQuestion = (<View>
+    <Text style={styles.questionInfoTitle}>
+      Expects plain text files where a single line represents a flash card.
+    </Text>
+    <Text style={styles.questionInfoTitle}>
+      NOTE: Splits term and definition on first ' - ' seen (or your perfered delimiter)
+    </Text>
+    <Text style={styles.questionInfoTitle}>
+      Expected format example:
+    </Text>
+  </View>)
+
+  const subMessageQuestion = (<View>
+    <Text style={styles.questionInfoBody}>
+      term1 - definition1
+    </Text>
+    <Text style={styles.questionInfoBody}>
+      multi word - definition that contains a - dash
+    </Text>
+  </View>);
 
   return (
     <View style={styles.container}>
+      <OurModal modalVisible={modalVisibleQuestionInfo} setModalVisible={setModalVisibleQuestionInfo} message={messageQuestion} subMessage={subMessageQuestion} style={styles.infoModal} />
       {errorMessage ? (
-        <OurModal modalVisible={modalVisible} setModalVisible={setModalVisible} message={errorMessage} subMessage={successfulUploadMessage} style={styles.errorModal} />
+        <OurModal modalVisible={modalVisibleSubmitInfo} setModalVisible={setModalVisibleSubmitInfo} message={errorMessage} subMessage={successfulUploadMessage} style={styles.errorModal} />
       ) : successfulUploadMessage ? (
-        <OurModal modalVisible={modalVisible} setModalVisible={setModalVisible} message={successfulUploadMessage} style={styles.infoModal} />
+        <OurModal modalVisible={modalVisibleSubmitInfo} setModalVisible={setModalVisibleSubmitInfo} message={successfulUploadMessage} style={styles.infoModal} />
       ) : <></>}
       <ImageBackground
         source={require('../../../assets/images/background.png')}
@@ -115,13 +138,20 @@ export default function CreateDeck() {
         resizeMode="cover"
       >
         <View style={styles.section}>
+          <TouchableOpacity
+            style={styles.questionButton}
+            onPress={onPressQuestion}
+          >
+            <Icon name="questioncircle" size={25} color="black" />
+          </TouchableOpacity>
           <View style={styles.fieldSection}>
             <Text style={styles.labelHeader}>Term to Definition Delimiter (Separator)</Text>
             <TextInput
               placeholder='(Default: " - ")'
-              style={styles.deckNameInput}
+              style={styles.fieldInput}
               value={cardDelimiter}
               onChangeText={setCardDelimiter}
+              placeholderTextColor={'#777777'}
             />
           </View>
           <View style={styles.fieldSection}>
@@ -138,7 +168,7 @@ export default function CreateDeck() {
             <Text style={styles.labelHeader}>Deck Name</Text>
             <TextInput
               placeholder=''
-              style={styles.deckNameInput}
+              style={styles.fieldInput}
               value={deckName}
               onChangeText={setDeckName}
             />
@@ -191,9 +221,10 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
   },
-  deckNameInput: {
+  fieldInput: {
     backgroundColor: "#FFFFFF",
     color: '#000000',
+    placeholderTextColor: '#000000',
   },
   errorModal: {
     backgroundColor: '#efa3a9',
@@ -203,11 +234,24 @@ const styles = StyleSheet.create({
   },
   labelHeader: {
     fontSize: 18,
+    color: '#000000',
   },
   fieldSection: {
     marginLeft: 14,
     marginRight: 14,
     marginTop: 0,
     marginBottom: 10,
+  },
+  questionButton: {
+    marginLeft: 10,
+    padding: 5,
+  },
+  questionInfoTitle: {
+    color: '#000000',
+    fontSize: 16,
+  },
+  questionInfoBody: {
+    color: '#000000',
+    fontSize: 14,
   },
 });

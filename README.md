@@ -6,18 +6,6 @@ Deck List Page:
 
  Remove need for 'Refresh Decks' button
 
- Add verification modal for delete action (Are you sure?)
-
-Create Deck Page: Add blurb about what kind of plain text files we expect
-
-blurb:
-
-  Expects plain text files where a single line represents a flash card. Expected format example:
-  NOTE: Splits term and definition on first ' - ' seen (or your perfered delimiter)
-
-  term1 - definition1
-  multi word - definition that is longer than a word and contains a dash ==> - <== here!
-
 remove all references to react-native-starter
 
 name project
