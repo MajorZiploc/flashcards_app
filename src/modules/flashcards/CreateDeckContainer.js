@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
-import { isDefinitionFirstSet, deckListSet } from './FlashCardsState';
+import { isDefinitionFirstSet } from './FlashCardsState';
 import CreateDeck from './CreateDeck';
 
 export default compose(
@@ -10,7 +10,6 @@ export default compose(
     }),
     dispatch => ({
       isDefinitionFirstSet: (isDefinitionFirst) => dispatch(isDefinitionFirstSet(isDefinitionFirst)),
-      deckListSet: (decks) => dispatch(deckListSet(decks)),
     }),
   ),
   withState('isExtended', 'setIsExtended', false))(

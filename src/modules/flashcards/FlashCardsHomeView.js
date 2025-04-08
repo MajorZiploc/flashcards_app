@@ -30,15 +30,12 @@ const cardSets = cardSetNames.map(cn => ({
   name: cn,
 }))
 
-export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync, decks, deckListSet, }) {
+export default function FlashCardsHomeScreen({ isExtended, setIsExtended, navigation, loadCards, loadCardsAsync }) {
   const [query, setQuery] = useState('');
   /** @type {import('../interfaces').useState<DBDeck[]>} */
-  const [_decks, setDecks] = useState([]);
+  const [decks, setDecks] = useState([]);
   /** @type {import('../interfaces').useState<boolean>} */
   const [modalVisibleDelete, setModalVisibleDelete] = useState(false);
-
-  console.log('decks1');
-  console.log(_decks);
 
   const fetchDecks = () => {
     (async () => {
@@ -52,17 +49,13 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
         await createDeckTable(db);
         await createCardTable(db);
         const storedDecks = await getDecks(db);
-        console.log('storedDecks');
-        console.log(storedDecks);
-        deckListSet(storedDecks);
         setDecks(storedDecks);
-        
         // if (storedDecks.length) {
-        //   deckListSet(storedDecks);
+        //   setDecks(storedDecks);
         // } else {
         //   // await saveDecks(db, initDecks);
         //   // const storedDecks = await getDecks(db);
-        //   // deckListSet(storedDecks);
+        //   // setDecks(storedDecks);
         // }
       } catch (error) {
         console.error(error);
@@ -76,16 +69,16 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
 
   // useEffect(() => {
   //   (async () => {
-  //     if (!_decks) return;
+  //     if (!decks) return;
   //     try {
   //       const db = await getDBConnection();
   //       await dropCardTable(db);
   //       const initCards = basicCards;
   //       await createCardTable(db);
-  //       for (const deck of _decks) {
+  //       for (const deck of decks) {
   //         await saveCards(db, initCards, deck);
   //       }
-  //       for (const deck of _decks) {
+  //       for (const deck of decks) {
   //         const dbCards = await getCards(db, deck.id);
   //         console.log('dbCards');
   //         console.log(dbCards);
@@ -94,11 +87,11 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
   //       console.error(error);
   //     }
   //   })();
-  // }, [_decks]);
+  // }, [decks]);
 
   const onSubmitDelete = (item) => () => {
     (async () => {
-      const selectedDeck = _decks.find(deck => deck.name === item);
+      const selectedDeck = decks.find(deck => deck.name === item);
       if (selectedDeck) {
         const db = await getDBConnection();
         await deleteDecks(db, [selectedDeck.id]);
@@ -141,7 +134,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             style={styles.deckActionButton}
             onPress={() => {
               (async () => {
-                const selectedDeck = _decks.find(deck => deck.name === item);
+                const selectedDeck = decks.find(deck => deck.name === item);
                 if (selectedDeck) {
                   const db = await getDBConnection();
                   const cards = await getCards(db, selectedDeck.id);
@@ -182,7 +175,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <FlatList
             keyExtractor={(item, idx) => `${item}-${idx}`}
             style={{ backgroundColor: '#c7cfcc', paddingHorizontal: 15 }}
-            data={(_decks ?? []).filter(deck => deck.name.toLowerCase().includes(query.toLowerCase())).map(deck => deck.name)}
+            data={(decks ?? []).filter(deck => deck.name.toLowerCase().includes(query.toLowerCase())).map(deck => deck.name)}
             renderItem={renderCardNameItem}
           />
           </View>
