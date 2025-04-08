@@ -1,5 +1,21 @@
 # TODO:
 
+## MVP
+
+Deck List Page: Remove need for 'Refresh Decks' button
+
+Create Deck Page: Add blurb about what kind of plain text files we expect
+
+blurb:
+
+  Expects plain text files where a single line represents a flash card. Expected format example:
+  NOTE: Splits term and definition on first ' - ' seen (or your perfered delimiter)
+
+  term1 - definition1
+  multi word - definition that is longer than a word and contains a dash ==> - <== here!
+
+## Rest
+
 add edit mode toggle in deck list view
 
   add edit deck ability - goes to import but any cards that match the current terms will replace the old cards
