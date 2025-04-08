@@ -54,7 +54,7 @@ export default function CreateDeck() {
         const _fileContent = await RNFS.readFile(docContent.localUri);
         // TODO: consider storing the localUri instead of whole fileContent here - then read file (hopefully as a stream) in the submit action when creating the deck
         setFileContent(_fileContent);
-        setDeckName(name);
+        if (!deckName) setDeckName(name);
       }
     })().catch((err) => {
       if (err.toString().includes('user canceled')) {
