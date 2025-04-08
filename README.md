@@ -18,6 +18,12 @@ blurb:
   term1 - definition1
   multi word - definition that is longer than a word and contains a dash ==> - <== here!
 
+remove all references to react-native-starter
+
+name project
+
+add app icon
+
 ## Rest
 
 add edit mode toggle in deck list view
