@@ -2,10 +2,6 @@
 
 ## MVP
 
-Deck List Page:
-
- Remove need for 'Refresh Decks' button
-
 remove all references to react-native-starter
 
 name project

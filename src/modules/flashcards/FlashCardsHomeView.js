@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {createCardTable, createDeckTable, dropCardTable, dropDeckTable, getCards, getDBConnection, getDecks, saveCards, saveDecks, deleteDecks} from './SqliteData';
 import RNFS from 'react-native-fs';
 import OurModal from './OurModal';
+import {useIsFocused} from '@react-navigation/native';
 
 /**
  * @typedef {import('../interfaces').DBCard} DBCard
@@ -36,6 +37,17 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
   const [decks, setDecks] = useState([]);
   /** @type {import('../interfaces').useState<boolean>} */
   const [modalVisibleDelete, setModalVisibleDelete] = useState(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+      if(!isFocused) return;
+      fetchDecks();
+  }, [isFocused])
+
+  // TODO: test if this is needed now that we have the above useEffect - hopefully the above useEffect triggers even on mount like this one does
+  // useEffect(() => {
+  //   fetchDecks();
+  // }, []);
 
   const fetchDecks = () => {
     (async () => {
@@ -62,10 +74,6 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
       }
     })();
   }
-
-  useEffect(() => {
-    fetchDecks();
-  }, []);
 
   // useEffect(() => {
   //   (async () => {
@@ -193,14 +201,6 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             caption="Settings"
             onPress={() => {
               navigation.navigate('Settings');
-            }}
-          />
-          <Button
-            style={[styles.button]}
-            primary
-            caption="Refresh Decks"
-            onPress={() => {
-              fetchDecks();
             }}
           />
         </View>
