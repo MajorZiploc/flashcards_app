@@ -26,6 +26,14 @@ address warnings and errors in console from various actions - also shown as popu
 
   its all in my dependencies - updating dependencies may fix it, but thats a large effort
 
+# Marketing
+
+Flashcard Link
+
+From laptop to phone flashcards
+
+Take notes in class on your laptop and quickly upload them to Flashcard Link to start studying now!
+
 # Check if you have all dependencies
 
 npx react-native doctor
