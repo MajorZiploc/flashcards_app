@@ -1,6 +1,7 @@
 const CARDS_LOADED = 'FlashCardsState/CARDS_LOADED';
 const SET_IS_DEFINITION_FIRST = 'FlashCardsState/SET_IS_DEFINITION_FIRST';
 const SET_IS_SHUFFLED = 'FlashCardsState/SET_IS_SHUFFLED';
+const SET_DECK_LIST = 'FlashCardsState/SET_DECK_LIST';
 
 export function cardsLoaded(cards) {
   return {
@@ -23,6 +24,13 @@ export function setIsShuffled(isShuffled) {
   };
 }
 
+export function setDeckList(decks) {
+  return {
+    type: SET_DECK_LIST,
+    decks,
+  };
+}
+
 export function loadCards(cards) {
   // Do cards loading here
   return (dispatch, getState) => {
@@ -42,6 +50,12 @@ export function isShuffledSet(isShuffled) {
   };
 }
 
+export function deckListSet(decks) {
+  return (dispatch, getState) => {
+    dispatch(setDeckList(decks));
+  };
+}
+
 // Similar pattern for calling apis can be used
 export const loadCardsAsync = cards => dispatch => {
   return new Promise(resolve => {
@@ -57,6 +71,7 @@ const defaultState = {
   isLoading: false,
   isDefinitionFirst: false,
   isShuffled: false,
+  decks: [],
 };
 
 export default function FlashcardsStateReducer(state = defaultState, action) {
@@ -73,6 +88,12 @@ export default function FlashcardsStateReducer(state = defaultState, action) {
     case SET_IS_SHUFFLED:
       return Object.assign({}, state, {
         isShuffled: action.isShuffled,
+      });
+    case SET_DECK_LIST:
+      console.log('action.type');
+      console.log(action.type);
+      return Object.assign({}, state, {
+        decks: action.decks,
       });
     default:
       return state;

@@ -17,7 +17,7 @@ import OurModal from './OurModal';
 
 const defaultCardDelimiter = ' - ';
 
-export default function CreateDeck() {
+export default function CreateDeck({deckListSet,}) {
 
   /** @type {import('../interfaces').useState<string | undefined>} */
   const [deckName, setDeckName] = useState();
@@ -84,6 +84,8 @@ export default function CreateDeck() {
         return {term, definition};
       });
       await saveCards(db, cards, deck);
+      const decks = (await getDecks(db));
+      deckListSet(decks);
     })()
       .then(() => {
         setErrorMessage(undefined);
