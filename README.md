@@ -28,7 +28,7 @@ address warnings and errors in console from various actions - also shown as popu
 
 # Marketing
 
-Flashcard Link
+Study Sama
 
 From laptop to phone flashcards
 
@@ -62,8 +62,8 @@ npx react-native log-ios
 
 ## NOTE: console.log should appear without this in the main running terminal. if it doesnt, then use one of these and it will start to show, then you can stop the details logs
 
-<!-- <a href='https://play.google.com/store/apps/details?id=com.flashcardslink.upd'><img width="200" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a> -->
-<!-- <a href='https://play.google.com/store/apps/details?id=com.flashcardslink.upd'><img width="200" alt='Download on App Store' src='https://i.imgur.com/7IxtMV0.png'/></a> -->
+<!-- <a href='https://play.google.com/store/apps/details?id=com.studysama.upd'><img width="200" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a> -->
+<!-- <a href='https://play.google.com/store/apps/details?id=com.studysama.upd'><img width="200" alt='Download on App Store' src='https://i.imgur.com/7IxtMV0.png'/></a> -->
 
 ## What's inside
 

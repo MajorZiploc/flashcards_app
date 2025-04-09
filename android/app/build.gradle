@@ -69,14 +69,14 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
-    namespace "com.flashcardslink"
+    namespace "com.studysama"
 //     compileOptions {
 //         sourceCompatibility JavaVersion.VERSION_1_8
 //         targetCompatibility JavaVersion.VERSION_1_8
 //     }
 
     defaultConfig {
-        applicationId "com.flashcardslink"
+        applicationId "com.studysama"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

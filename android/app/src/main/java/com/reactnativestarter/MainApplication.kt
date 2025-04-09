@@ -1,4 +1,4 @@
-package com.flashcardslink
+package com.studysama
 
 import android.app.Application
 import com.facebook.react.PackageList
