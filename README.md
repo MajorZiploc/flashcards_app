@@ -2,10 +2,6 @@
 
 ## MVP
 
-add app icon
-
-  https://developer.android.com/studio/write/create-app-icons#access
-
 cleanup git history
 
 ## Rest
