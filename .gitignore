@@ -72,3 +72,4 @@ tags
 
 cscope.out
 *.kra~
+*.kra-autosave.*
