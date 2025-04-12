@@ -30,11 +30,12 @@ export default function Settings({ isDefinitionFirst, isDefinitionFirstSet, isSh
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require('../../../assets/images/background.png')}
-        style={styles.bgImage}
-        resizeMode="cover"
-      >
+      <View style={styles.basicBackground}>
+      {/* <ImageBackground */}
+      {/*   source={require('../../../assets/images/background.png')} */}
+      {/*   style={styles.bgImage} */}
+      {/*   resizeMode="cover" */}
+      {/* > */}
         <View style={styles.section}>
           <View style={[styles.radioFirst]}>
             <RadioGroup
@@ -51,7 +52,8 @@ export default function Settings({ isDefinitionFirst, isDefinitionFirstSet, isSh
             />
           </View>
         </View>
-      </ImageBackground>
+      {/* </ImageBackground> */}
+      </View>
     </View>
   );
 }
@@ -64,12 +66,17 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: -20,
   },
+  basicBackground: {
+    flex: 1,
+    marginHorizontal: -20,
+    backgroundColor: '#44a88d',
+  },
   section: {
     flex: 1,
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#c7cfcc',
+    backgroundColor: '#577277',
   },
   radioFirst: {
     height: 50,

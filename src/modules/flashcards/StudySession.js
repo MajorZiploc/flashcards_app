@@ -7,7 +7,7 @@ import StudyCard from './StudyCard';
 export const Gray300 = '#E0E0E0'
 export const Gray100 = '#F5F5F5'
 export const Gray50 = '#FAFAFA'
-export const White = '#FFFFFF'
+export const White = '#ebede9'
 export const Red = '#CE1126'
 export const Green = '#007A3D'
 

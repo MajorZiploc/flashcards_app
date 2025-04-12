@@ -161,11 +161,12 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require('../../../assets/images/background.png')}
-        style={styles.bgImage}
-        resizeMode="cover"
-      >
+      <View style={styles.basicBackground}>
+      {/* <ImageBackground */}
+      {/*   source={require('../../../assets/images/background.png')} */}
+      {/*   style={styles.bgImage} */}
+      {/*   resizeMode="cover" */}
+      {/* > */}
         <View style={styles.section}>
           <View style={styles.cardSetNamesTitleBox}>
             <Text>
@@ -183,7 +184,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <View style={styles.cardSetNames}>
           <FlatList
             keyExtractor={(item, idx) => `${item}-${idx}`}
-            style={{ backgroundColor: '#c7cfcc', paddingHorizontal: 15 }}
+            style={{ backgroundColor: '#ebede9', paddingHorizontal: 15 }}
             data={(decks ?? []).filter(deck => deck.name.toLowerCase().includes(query.toLowerCase())).map(deck => deck.name)}
             renderItem={renderCardNameItem}
           />
@@ -191,6 +192,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <Button
             style={[styles.button]}
             primary
+            bgColor="#253a5e"
             caption="Create Deck"
             onPress={() => {
               navigation.navigate('Create Deck');
@@ -199,13 +201,15 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
           <Button
             style={[styles.button]}
             primary
+            bgColor="#253a5e"
             caption="Settings"
             onPress={() => {
               navigation.navigate('Settings');
             }}
           />
         </View>
-      </ImageBackground>
+      {/* </ImageBackground> */}
+      </View>
     </View>
   );
 }
@@ -217,6 +221,11 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     marginHorizontal: -20,
+  },
+  basicBackground: {
+    flex: 1,
+    marginHorizontal: -20,
+    backgroundColor: '#44a88d',
   },
   section: {
     flex: 1,
@@ -232,7 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   cardSetNamesTitle: {
-    color: '#FFFFFF',
+    color: '#ebede9',
     fontSize: 30,
     marginLeft: 4,
   },
@@ -244,7 +253,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   searchBox: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#ebede9",
     marginLeft: 10,
     flexGrow: 3,
     marginRight: 10,
@@ -255,7 +264,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     marginVertical: 5,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#ebede9',
     borderRadius: 5,
     elevation: 2,
   },

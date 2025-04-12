@@ -134,17 +134,18 @@ export default function CreateDeck() {
       ) : successfulUploadMessage ? (
         <OurModal modalVisible={modalVisibleSubmitInfo} setModalVisible={setModalVisibleSubmitInfo} message={successfulUploadMessage} style={styles.infoModal} />
       ) : <></>}
-      <ImageBackground
-        source={require('../../../assets/images/background.png')}
-        style={styles.bgImage}
-        resizeMode="cover"
-      >
+      <View style={styles.basicBackground}>
+      {/* <ImageBackground */}
+      {/*   source={require('../../../assets/images/background.png')} */}
+      {/*   style={styles.bgImage} */}
+      {/*   resizeMode="cover" */}
+      {/* > */}
         <View style={styles.section}>
           <TouchableOpacity
             style={styles.questionButton}
             onPress={onPressQuestion}
           >
-            <Icon name="questioncircle" size={25} color="black" />
+            <Icon name="questioncircle" size={25} color="#ebede9" />
           </TouchableOpacity>
           <View style={styles.fieldSection}>
             <Text style={styles.labelHeader}>Term to Definition Delimiter (Separator)</Text>
@@ -159,6 +160,7 @@ export default function CreateDeck() {
           <View style={styles.fieldSection}>
             <Button
               style={[styles.button]}
+              bgColor="#253a5e"
               disabled={false}
               caption="Pick File"
               onPress={() => {
@@ -177,6 +179,7 @@ export default function CreateDeck() {
           </View>
           <Button
             style={[styles.button, {marginTop: 50}]}
+            bgColor="#253a5e"
             disabled={false}
             caption="Submit"
             onPress={() => {
@@ -184,7 +187,8 @@ export default function CreateDeck() {
             }}
           />
         </View>
-      </ImageBackground>
+      {/* </ImageBackground> */}
+      </View>
     </View>
   );
 }
@@ -196,6 +200,11 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     marginHorizontal: -20,
+  },
+  basicBackground : {
+    flex: 1,
+    marginHorizontal: -20,
+    backgroundColor: '#44a88d',
   },
   successfulUploadSection: {
     paddingHorizontal: 20,
@@ -217,14 +226,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
-    backgroundColor: '#c7cfcc',
+    backgroundColor: '#577277',
   },
   button: {
     marginTop: 8,
     marginBottom: 8,
   },
   fieldInput: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#ebede9",
     color: '#000000',
   },
   errorModal: {
@@ -235,7 +244,7 @@ const styles = StyleSheet.create({
   },
   labelHeader: {
     fontSize: 18,
-    color: '#000000',
+    color: '#ebede9',
   },
   fieldSection: {
     marginLeft: 14,

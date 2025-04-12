@@ -3,6 +3,7 @@ import {Modal, StyleSheet, Text, View, Button} from 'react-native';
 
 const OurModal = ({modalVisible, setModalVisible, message, style, subMessage, onSubmit, closeText, submitText}) => {
   const _closeText = closeText || 'Close';
+  const hasSubmit = submitText && onSubmit;
   return (
     <Modal
       animationType="slide"
@@ -25,14 +26,16 @@ const OurModal = ({modalVisible, setModalVisible, message, style, subMessage, on
             <Button
               title={_closeText}
               style={[styles.button, styles.buttonClose]}
+              bgColor={hasSubmit ? "#253a5e" : undefined}
               disabled={false}
               caption={_closeText}
               onPress={() => setModalVisible(!modalVisible)}
             />
-            {submitText && onSubmit && (<>
+            {hasSubmit && (<>
               <View style={{margin: 20}}></View>
               <Button
                 title={submitText}
+                bgColor="#253a5e"
                 style={[styles.button, styles.buttonClose]}
                 disabled={false}
                 caption={submitText}
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     marginVertical: 5,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#ebede9',
     borderRadius: 5,
   },
   modalTitle: {
