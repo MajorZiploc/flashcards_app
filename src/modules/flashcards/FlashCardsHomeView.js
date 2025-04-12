@@ -174,6 +174,7 @@ export default function FlashCardsHomeScreen({ isExtended, setIsExtended, naviga
             <Text style={styles.cardSetNamesTitle}>Decks</Text>
             <TextInput
               placeholder='Search Decks'
+              placeholderTextColor={'#777777'}
               style={styles.searchBox}
               value={query}
               onChangeText={setQuery}
