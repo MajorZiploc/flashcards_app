@@ -1,5 +1,6 @@
 import React  from 'react';
-import {Modal, StyleSheet, Text, View, Button} from 'react-native';
+import {Modal, StyleSheet, Text, View} from 'react-native';
+import { Button } from '../../components';
 
 const OurModal = ({modalVisible, setModalVisible, message, style, subMessage, onSubmit, closeText, submitText}) => {
   const _closeText = closeText || 'Close';
@@ -24,20 +25,19 @@ const OurModal = ({modalVisible, setModalVisible, message, style, subMessage, on
           }
           <View style={styles.buttons}>
             <Button
-              title={_closeText}
-              style={[styles.button, styles.buttonClose]}
-              bgColor={hasSubmit ? "#253a5e" : undefined}
-              disabled={false}
+              style={[styles.button]}
+              primary={!hasSubmit}
+              bordered={hasSubmit}
+              bgColor="#44a88d"
               caption={_closeText}
               onPress={() => setModalVisible(!modalVisible)}
             />
             {hasSubmit && (<>
               <View style={{margin: 20}}></View>
               <Button
-                title={submitText}
-                bgColor="#253a5e"
-                style={[styles.button, styles.buttonClose]}
-                disabled={false}
+                style={[styles.button]}
+                primary
+                bgColor="#44a88d"
                 caption={submitText}
                 onPress={onSubmit}
               />
@@ -70,14 +70,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
+  button: {},
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
@@ -94,7 +87,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     marginVertical: 5,
-    backgroundColor: '#ebede9',
     borderRadius: 5,
   },
   modalTitle: {
