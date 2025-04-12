@@ -31,12 +31,13 @@ export default function Settings({ isDefinitionFirst, isDefinitionFirstSet, isSh
   return (
     <View style={styles.container}>
       <View style={styles.basicBackground}>
-      {/* <ImageBackground */}
-      {/*   source={require('../../../assets/images/background.png')} */}
-      {/*   style={styles.bgImage} */}
-      {/*   resizeMode="cover" */}
-      {/* > */}
         <View style={styles.section}>
+      <ImageBackground
+        source={require('../../../assets/images/study_sama_uwu_idle.png')}
+        style={styles.bgImage}
+        resizeMode="cover"
+      >
+      </ImageBackground>
           <View style={[styles.radioFirst]}>
             <RadioGroup
               selectedIndex={selectedFirstIndex}
@@ -52,7 +53,6 @@ export default function Settings({ isDefinitionFirst, isDefinitionFirstSet, isSh
             />
           </View>
         </View>
-      {/* </ImageBackground> */}
       </View>
     </View>
   );
@@ -64,7 +64,18 @@ const styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
-    marginHorizontal: -20,
+    width: '80%',
+    height: '50%',
+    position: 'absolute',
+    // objectFit: 'scale-down',
+    backgroundRepeat: 'no-repeat',
+    // backgroundSize: 'contain',
+    zIndex: -1,
+    // backgroundSize: '1%',
+    // top: '50%',
+    left: '25%',
+    bottom: '45%',
+    // right: '50%',
   },
   basicBackground: {
     flex: 1,
